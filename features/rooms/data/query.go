@@ -36,8 +36,7 @@ func (q *query) SelectByUserId(user_id uint) ([]rooms.RoomEntity, error) {
 	var room []Room
 	err := q.db.Preload("User").
 		Select("rooms.*").
-		Where("user_id", user_id).
-		// InnerJoins("User").
+		Where("user_id", user_id).InnerJoins("User").
 		First(&room)
 
 	if err.Error != nil {
