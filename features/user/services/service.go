@@ -112,7 +112,12 @@ func (uuc *userUseCase) Update(token interface{}, fileData multipart.FileHeader,
 	return res, nil
 }
 
-// Deactivate implements user.UserService
-func (*userUseCase) Deactivate(token interface{}) error {
-	panic("unimplemented")
+func (uuc *userUseCase) Deactivate(token interface{}) error {
+	id := helper.ExtractToken(token)
+	err := uuc.qry.Deactivate(uint(id))
+	if err != nil {
+		log.Println("query error", err.Error())
+		return errors.New("query error, delete account fail")
+	}
+	return nil
 }
