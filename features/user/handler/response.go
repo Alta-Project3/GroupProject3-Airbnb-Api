@@ -1,6 +1,9 @@
 package handler
 
-import "groupproject3-airbnb-api/features/user"
+import (
+	"errors"
+	"groupproject3-airbnb-api/features/user"
+)
 
 type UserReponse struct {
 	ID    uint   `json:"id"`
@@ -36,4 +39,36 @@ func ToProfileResponse(data user.Core) ProfileResponse {
 		Address:        data.Address,
 		Role:           data.Role,
 	}
+}
+
+func ConvertUpdateResponse(input user.Core) (interface{}, error) {
+	ResponseFilter := user.Core{}
+	ResponseFilter = input
+	result := make(map[string]interface{})
+	if ResponseFilter.ID != 0 {
+		result["id"] = ResponseFilter.ID
+	}
+	if ResponseFilter.ProfilePicture != "" {
+		result["profile_picture"] = ResponseFilter.ProfilePicture
+	}
+	if ResponseFilter.Name != "" {
+		result["name"] = ResponseFilter.Name
+	}
+	if ResponseFilter.Email != "" {
+		result["email"] = ResponseFilter.Email
+	}
+	if ResponseFilter.Phone != "" {
+		result["phone"] = ResponseFilter.Phone
+	}
+	if ResponseFilter.Address != "" {
+		result["address"] = ResponseFilter.Address
+	}
+	if ResponseFilter.Password != "" {
+		result["password"] = ResponseFilter.Password
+	}
+
+	if len(result) <= 1 {
+		return user.Core{}, errors.New("no data was change")
+	}
+	return result, nil
 }
