@@ -105,7 +105,6 @@ paths:
                 data:
                   id: 1
                   name: "Alif Muhamad Hafidz"
-                  username: "alif23"
                   email: "alifmuhamadhafidz23@gmail.com"
                   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
                 message: "login success"
