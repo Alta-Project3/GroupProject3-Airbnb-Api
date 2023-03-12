@@ -2,7 +2,6 @@ package handler
 
 import (
 	"groupproject3-airbnb-api/features/user"
-	"log"
 	"net/http"
 	"strings"
 
@@ -27,7 +26,7 @@ func (uc *userControll) Register() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "input format incorrect"})
 		}
 
-		res, err := uc.srv.Register(*ReqToCore(input))
+		err = uc.srv.Register(*ReqToCore(input))
 		if err != nil {
 			if strings.Contains(err.Error(), "already") {
 				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "email already registered"})
@@ -39,7 +38,6 @@ func (uc *userControll) Register() echo.HandlerFunc {
 				return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
 			}
 		}
-		log.Println(res)
 		return c.JSON(http.StatusCreated, map[string]interface{}{"message": "success create account"})
 	}
 }

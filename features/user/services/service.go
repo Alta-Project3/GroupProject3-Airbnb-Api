@@ -22,18 +22,18 @@ func New(ud user.UserData) user.UserService {
 	}
 }
 
-func (uuc *userUseCase) Register(newUser user.Core) (user.Core, error) {
+func (uuc *userUseCase) Register(newUser user.Core) error {
 	if len(newUser.Password) != 0 {
 		//validation
 		err := helper.RegistrationValidate(newUser)
 		if err != nil {
-			return user.Core{}, errors.New("validate: " + err.Error())
+			return errors.New("validate: " + err.Error())
 		}
 	}
 	hashed := helper.GeneratePassword(newUser.Password)
 	newUser.Password = string(hashed)
 
-	res, err := uuc.qry.Register(newUser)
+	err := uuc.qry.Register(newUser)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "duplicated") {
@@ -41,10 +41,10 @@ func (uuc *userUseCase) Register(newUser user.Core) (user.Core, error) {
 		} else {
 			msg = "server error"
 		}
-		return user.Core{}, errors.New(msg)
+		return errors.New(msg)
 	}
 
-	return res, nil
+	return nil
 }
 
 func (uuc *userUseCase) Login(email, password string) (string, user.Core, error) {
