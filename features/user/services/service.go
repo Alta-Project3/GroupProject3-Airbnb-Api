@@ -6,6 +6,7 @@ import (
 	"groupproject3-airbnb-api/features/user"
 	"groupproject3-airbnb-api/helper"
 	"log"
+	"mime/multipart"
 	"strings"
 	"time"
 
@@ -72,4 +73,24 @@ func (uuc *userUseCase) Login(email, password string) (string, user.Core, error)
 	useToken, _ := token.SignedString([]byte(config.JWTKey))
 
 	return useToken, res, nil
+}
+
+func (uuc *userUseCase) Profile(token interface{}) (user.Core, error) {
+	userID := helper.ExtractToken(token)
+	res, err := uuc.qry.Profile(uint(userID))
+	if err != nil {
+		log.Println("data not found")
+		return user.Core{}, errors.New("query error, problem with server")
+	}
+	return res, nil
+}
+
+// Update implements user.UserService
+func (*userUseCase) Update(token interface{}, fileData multipart.FileHeader, updateData user.Core) (user.Core, error) {
+	panic("unimplemented")
+}
+
+// Deactivate implements user.UserService
+func (*userUseCase) Deactivate(token interface{}) error {
+	panic("unimplemented")
 }
