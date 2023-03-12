@@ -1,0 +1,331 @@
+openapi: 3.0.3
+info:
+  title: Air Bnb Project
+  description: This is API for Air Bnb Project
+  version: "1.0.0"
+  contact:
+    email: alifmuhamadhafidz23@gmail.com
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+servers:
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ALIFMUHAMADHAFIDZ23/Air-BNB/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ALIFMUHAMADHAFIDZ23/Advance-RentBook-API/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://app.swaggerhub.com/apis/ALIFMUHAMADHAFIDZ23/Advance-RentBook-API/1.0.0
+  - description: SwaggerHub API Auto Mocking
+    url: https://app.swaggerhub.com/apis/ALIFMUHAMADHAFIDZ23/Advance-RentBook-API/1.0.0
+  - url: https://baggioshop.site
+    description: primarry link
+
+paths:
+  /register:
+    post:
+      tags:
+        - "Auth"
+      description: register feature for new users
+      summary: register feature for new users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                address:
+                  type: string
+                password:
+                  type: string
+                  format: password
+            example:
+              name: "Alif Muhamad Hafidz"
+              email: "alifmuhamadhafidz23@gmail.com"
+              phone: "0813456"
+              address: "Bangka"
+              password: "123"
+      responses:
+        201:
+          description: "success insert data"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success create account"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  /login:
+    post:
+      tags:
+        - "Auth"
+      description: login feature for users
+      summary: login feature for users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+            example:
+              email: "alifmuhamadhafidz23@gmail.com"
+              password: "123"
+      responses:
+        200:
+          description: "login success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  name: "Alif Muhamad Hafidz"
+                  username: "alif23"
+                  email: "alifmuhamadhafidz23@gmail.com"
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
+                message: "login success"
+
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "account not registered"
+        500:
+          $ref: "#/components/responses/500"
+  /users:
+    get:
+      tags:
+        - "User"
+      description: get user profile
+      summary: get user profile
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: success show user profile
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  id: 1
+                  profile_picture: "https://fauziawsbucket.s3.ap-southeast-1.amazonaws.com/559d75ff-88c8-40af-8740-233667b36feco.png"
+                  name: "Alif Muhamad Hafidz"
+                  email: "alifmuhamadhafidz23@gmail.com"
+                  phone: "0813456"
+                  address: "Bangka"
+                message: "success show profile"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - "User"
+      description: edit user profile
+      summary: edit user profile
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profile_picture:
+                  type: string
+                  format: binary
+            example:
+              profile_picture: "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                address:
+                  type: string
+                password:
+                  type: string
+                  format: password
+            example:
+              name: "Alif Muhamad Hafidz"
+              email: "alifmuhamadhafidz23@gmail.com"
+              phone: "0813456"
+              address: "Bangka"
+              password: "1234"
+      responses:
+        200:
+          description: success update user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  profile_picture: "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
+                  name: "Alif Muhamad Hafidz"
+                  username: "alifhfdz23"
+                  birth_of_date: "2000-01-31"
+                  email: "alifmuhamadhafidz23@gmail.com"
+                  password: "1234"
+                  phone: "0813456"
+                  address: "Bangka"
+                message: "success update user profile"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - "User"
+      description: deactivate user
+      summary: deactivate user
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: success deactivate
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "succes deactivate"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        500:
+          $ref: "#/components/responses/500"
+  /users/upgrade:
+    post:
+      tags:
+        - "User"
+      summary: "upgrade user to host"
+      description: "upgrade user to host"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approvement:
+                  type: string
+            example:
+              approvement: "Approve"
+      responses:
+        201:
+          description: "success upgrade user to host"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success upgrade user to host"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    responseObject:
+      type: object
+      properties:
+        data:
+          type: object
+        message:
+          type: string
+  responses:
+    400:
+      description: "error from user"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "bad request"
+    500:
+      description: "error from server"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "internal server error"
