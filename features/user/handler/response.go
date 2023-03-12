@@ -5,14 +5,14 @@ import (
 	"groupproject3-airbnb-api/features/user"
 )
 
-type UserReponse struct {
+type UserResponse struct {
 	ID    uint   `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
-func ToResponse(data user.Core) UserReponse {
-	return UserReponse{
+func ToResponse(data user.Core) UserResponse {
+	return UserResponse{
 		ID:    data.ID,
 		Name:  data.Name,
 		Email: data.Email,
