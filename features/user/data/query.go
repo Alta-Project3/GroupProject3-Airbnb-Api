@@ -40,7 +40,16 @@ func (uq *userQuery) Register(newUser user.Core) (user.Core, error) {
 	return newUser, nil
 }
 
-// Login implements user.UserData
-func (*userQuery) Login(email string) (user.Core, error) {
-	panic("unimplemented")
+func (uq *userQuery) Login(email string) (user.Core, error) {
+	if email == "" {
+		log.Println("data empty, query error")
+		return user.Core{}, errors.New("email not allowed empty")
+	}
+	res := User{}
+	if err := uq.db.Where("email = ?", email).First(&res).Error; err != nil {
+		log.Println("login query error", err.Error())
+		return user.Core{}, errors.New("data not found")
+	}
+
+	return ToCore(res), nil
 }

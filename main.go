@@ -1,9 +1,9 @@
 package main
 
 import (
-	"groupproject3-airbnb-api/app/config"
-	"groupproject3-airbnb-api/app/database"
-	"groupproject3-airbnb-api/app/router"
+	config "groupproject3-airbnb-api/app/config"
+	database "groupproject3-airbnb-api/app/database"
+	router "groupproject3-airbnb-api/app/router"
 	"log"
 
 	"github.com/labstack/echo/v4"

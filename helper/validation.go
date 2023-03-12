@@ -27,13 +27,11 @@ func TypeFile(test multipart.File) (string, error) {
 }
 
 type UserValidate struct {
-	Name        string `validate:"required"`
-	Username    string `validate:"required"`
-	BirthOfDate string `validate:"required"`
-	Email       string `validate:"required,email"`
-	Phone       string `validate:"required,numeric"`
-	Address     string `validate:"required"`
-	Password    string `validate:"required,min=3,alphanum"`
+	Name     string `validate:"required"`
+	Email    string `validate:"required,email"`
+	Phone    string `validate:"required,numeric"`
+	Address  string `validate:"required"`
+	Password string `validate:"required,min=3,alphanum"`
 }
 
 func CoreToRegVal(data user.Core) UserValidate {
