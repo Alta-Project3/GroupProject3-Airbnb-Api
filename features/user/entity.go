@@ -10,6 +10,7 @@ type Core struct {
 	Password       string
 	Phone          string
 	Address        string
+	Role           string
 }
 
 type UserHandler interface {
