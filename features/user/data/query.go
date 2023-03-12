@@ -91,7 +91,25 @@ func (uq *userQuery) Update(userID uint, updateData user.Core) (user.Core, error
 	return result, nil
 }
 
-// Deactivate implements user.UserData
-func (*userQuery) Deactivate(userID uint) error {
-	panic("unimplemented")
+func (uq *userQuery) Deactivate(userID uint) error {
+	getID := User{}
+	err := uq.db.Where("id = ?", userID).First(&getID).Error
+	if err != nil {
+		log.Println("get user error : ", err.Error())
+		return errors.New("failed to get user data")
+	}
+
+	if getID.ID != userID {
+		log.Println("unauthorized request")
+		return errors.New("unauthorized request")
+	}
+	qryDelete := uq.db.Delete(&User{}, userID)
+	affRow := qryDelete.RowsAffected
+
+	if affRow <= 0 {
+		log.Println("No rows affected")
+		return errors.New("failed to delete user content, data not found")
+	}
+
+	return nil
 }
