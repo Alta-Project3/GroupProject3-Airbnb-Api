@@ -291,6 +291,331 @@ paths:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+
+####################################
+#  ROOM
+####################################
+  /rooms:
+    get:
+      tags:
+        - Room
+      summary: List all Room
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: A list of all room
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+              
+              examples:
+                teamData:
+                  description: "Example data room"
+                  value: {
+                    status: true,
+                    message: "-",
+                    data : [
+                      {
+                        "id": 1,
+                        "user_id" : 1,
+                        "room_name": "Villa Bali Green",
+                        "price": 25000,
+                        "description": "string",
+                        "latitude": 29.4,
+                        "longitude": 30.5
+                      },
+                      {
+                        "id": 2,
+                        "user_id" : 2,
+                        "room_name": "Villa Bali Green",
+                        "price": 25000,
+                        "description": "string",
+                        "latitude": 29.4,
+                        "longitude": 30.5
+                      }
+                    ]
+                  }
+        '404':
+          $ref: '#/components/responses/404'
+        '401' :
+          $ref: '#/components/responses/401'
+        '500' :
+          $ref: '#/components/responses/500'
+
+    post:
+      tags:
+        - Room
+      summary: Create a new room
+      security:
+        - JWTAuth: []
+      requestBody:
+        description: The room to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - room_name
+                - price
+                - description
+                - latitude
+                - longitude
+              properties:
+                user_id:
+                  type: integer
+                  description: ID from user
+                room_name:
+                  type: string
+                  description: Room name
+                price:
+                  type: integer
+                  description: Price room per day
+                description:
+                  type: string
+                  description: description
+                latitude:
+                  type: integer
+                  description: latitude
+                longitude:
+                  type: integer
+                  description: longitude
+      responses:
+        '201':
+          description: Created room
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+
+              examples:
+                classData:
+                  description: "Example data room"
+                  value: {
+                    status: true,
+                    message: "Create data success",
+                    data : 
+                      {
+                        "id": 1,
+                        "user_id" : 1,
+                        "room_name": "Villa Bali Green",
+                        "price": 25000,
+                        "description": "string",
+                        "latitude": 29.4,
+                        "longitude": 30.5
+                      }
+                  }
+        '500' :
+          $ref: '#/components/responses/500'
+
+  /rooms/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: The ID of the room to retrieve or update
+        schema:
+          type: integer
+
+    get:
+      tags:
+      - Room
+      summary: Get a room by ID
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: The requested room
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+              
+              examples:
+                teamData:
+                  description: "Example data class"
+                  value: {
+                    status: true,
+                    message: "-",
+                    data : 
+                      {
+                        "id": 1,
+                        "user_id" : 1,
+                        "room_name": "Villa Bali Green",
+                        "price": 25000,
+                        "description": "string",
+                        "latitude": 29.4,
+                        "longitude": 30.5
+                      }
+                  }
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '401' :
+          $ref: '#/components/responses/401'
+        '500' :
+          $ref: '#/components/responses/500'
+
+    put:
+      tags:
+      - Room
+      summary: Update a room by ID
+      security:
+        - JWTAuth: []
+      requestBody:
+        description: The updated room
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  description: ID from user
+                room_name:
+                  type: string
+                  description: Room name
+                price:
+                  type: integer
+                  description: Price room per day
+                description:
+                  type: string
+                  description: description
+                latitude:
+                  type: integer
+                  description: latitude
+                longitude:
+                  type: integer
+                  description: longitude
+      responses:
+        '200':
+          description: The updated room
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+              
+              examples:
+                teamData:
+                  description: "Example data room"
+                  value: {
+                    status: true,
+                    message: "Update data success",
+                    data : 
+                      {
+                        "id": 1,
+                        "user_id" : 1,
+                        "room_name": "Villa Bali Green",
+                        "price": 25000,
+                        "description": "string",
+                        "latitude": 29.4,
+                        "longitude": 30.5
+                      }
+                  }
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '401' :
+          $ref: '#/components/responses/401'
+        '500' :
+          $ref: '#/components/responses/500'
+
+    delete:
+      tags:
+      - Room
+      summary: Delete a room by ID
+      security:
+        - JWTAuth: []
+      responses:
+        '204':
+          description: The room was successfully deleted
+          content:
+            application/json:
+              examples:
+                teamData:
+                  description: "Delete team"
+                  value: {
+                    status: true,
+                    message: "Delete data success"
+                  }
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '401' :
+          $ref: '#/components/responses/401'
+        '500' :
+          $ref: '#/components/responses/500'
+
+  /users/{id}/rooms:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: The ID of the user
+        schema:
+          type: integer
+
+    get:
+      tags:
+      - Room
+      summary: Get a room by User ID
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          description: The requested room
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+              
+              examples:
+                teamData:
+                  description: "Example data class"
+                  value: {
+                    status: true,
+                    message: "-",
+                    data : 
+                      {
+                        "id": 1,
+                        "user_id" : 1,
+                        "room_name": "Villa Bali Green",
+                        "price": 25000,
+                        "description": "string",
+                        "latitude": 29.4,
+                        "longitude": 30.5
+                      },
+                      {
+                        "id": 1,
+                        "user_id" : 2,
+                        "room_name": "Villa Bali Green",
+                        "price": 25000,
+                        "description": "string",
+                        "latitude": 29.4,
+                        "longitude": 30.5
+                      }
+                  }
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+          $ref: '#/components/responses/404'
+        '401' :
+          $ref: '#/components/responses/401'
+        '500' :
+          $ref: '#/components/responses/500'
+
+####################################
+#  COMPONENT
+####################################
 components:
   securitySchemes:
     JWTAuth:
@@ -305,7 +630,194 @@ components:
           type: object
         message:
           type: string
+    Room:
+      type: object
+      required:
+        - name
+        - pic
+        - start_date
+        - graduate_date
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the team
+        name:
+          type: string
+          description: The name of the team
+        pic:
+          type: integer
+          description: The name of the team
+        start_date:
+          type: string
+          format: date
+          description: The name of the team
+        graduate_date:
+          type: string
+          format: date
+          description: The name of the team
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the team was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time the team was last updated
+        deleted_at:
+          type: string
+          format: date-time
+          description: The date and time the team was deleted
+
+    Reservation:
+      type: object
+      required:
+        - room_id
+        - payment_id
+        - date_start
+        - date_end
+        - duration
+        - total_price
+        - status
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the reservation
+        room_id:
+          type: integer
+          format: int64
+          description: The ID of the Room
+        payment_id:
+          type: integer
+          format: int64
+          description: The ID of the Payment
+        date_start:
+          type: string
+          format: date
+          description: Start date
+        date_end:
+          type: string
+          format: date
+          description: End date
+        status:
+          type: string
+          description: Accept,Cancel,Done
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the team was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time the team was last updated
+        deleted_at:
+          type: string
+          format: date-time
+          description: The date and time the team was deleted
+
+    Payment:
+      type: object
+      required:
+        - type
+        - name
+        - number
+        - cvv
+        - month
+        - year
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the reservation
+        type:
+          type: string
+          description: type
+        name:
+          type: string
+          description: name
+        number:
+          type: string
+          description: type
+        cvv:
+          type: string
+          description: name
+        month:
+          type: string
+          description: type
+        year:
+          type: string
+          description: name
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the team was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time the team was last updated
+        deleted_at:
+          type: string
+          format: date-time
+          description: The date and time the team was deleted
+
+    Feedback:
+      type: object
+      required:
+        - reservation_id
+        - room_id
+        - rating
+        - feedback
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The ID of the Feedback
+        reservation_id:
+          type: integer
+          format: int64
+          description: The ID of the Reservation
+        room_id:
+          type: integer
+          format: int64
+          description: The ID of the Room
+        rating:
+          type: string
+          description: type
+        feedback:
+          type: string
+          description: name
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time the team was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time the team was last updated
+        deleted_at:
+          type: string
+          format: date-time
+          description: The date and time the team was deleted
+  
+  
   responses:
+    204:
+      description: Delete data success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
+          example:
+            status: true
+            message: "Delete data success"
+            data : []
+
     400:
       description: "error from user"
       content:
@@ -317,6 +829,35 @@ components:
                 type: string
           example:
             message: "bad request"
+    401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
+          example:
+            status: false
+            message: "request does not contain a valid token"
+    404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
+          example:
+            status: false
+            message: "data not found"
+    
     500:
       description: "error from server"
       content:
