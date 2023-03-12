@@ -21,5 +21,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	e.POST("/login", uHandler.Login())
 	e.GET("/users", uHandler.Profile(), middleware.JWT([]byte(config.JWTKey)))
 	e.PUT("/users", uHandler.Update(), middleware.JWT([]byte(config.JWTKey)))
-	e.GET("/users", uHandler.Deactivate(), middleware.JWT([]byte(config.JWTKey)))
+	e.DELETE("/users", uHandler.Deactivate(), middleware.JWT([]byte(config.JWTKey)))
 }
