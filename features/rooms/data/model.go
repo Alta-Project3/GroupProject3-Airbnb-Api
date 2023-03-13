@@ -12,7 +12,7 @@ import (
 type Room struct {
 	gorm.Model
 	UserId      uint
-	User        *data.User
+	User        *data.User `gorm:"foreignKey:UserId"`
 	RoomName    string
 	Price       int
 	Description string

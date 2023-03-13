@@ -22,3 +22,13 @@ type ReservationEntity struct {
 	CardYear          string
 	StatusReservation string
 }
+
+type ReservationServiceInterface interface {
+	GetByRoomAndDateRange() ([]ReservationEntity, error)
+	Create(reservationEntity ReservationEntity) (ReservationEntity, error)
+}
+
+type ReservationDataInterface interface {
+	SelectyRoomAndDateRange() ([]ReservationEntity, error)
+	Store(reservationEntity ReservationEntity) (uint, error)
+}
