@@ -11,7 +11,7 @@ import (
 	_roomService "groupproject3-airbnb-api/features/rooms/service"
 )
 
-func RoomRouter(db *gorm.DB, e *echo.Echo) {
+func roomRouter(db *gorm.DB, e *echo.Echo) {
 	data := _roomData.New(db)
 	service := _roomService.New(data)
 	handler := _roomHandler.New(service)

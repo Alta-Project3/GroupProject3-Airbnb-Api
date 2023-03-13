@@ -3,7 +3,8 @@ package database
 import (
 	"fmt"
 	"groupproject3-airbnb-api/app/config"
-	uData "groupproject3-airbnb-api/features/user/data"
+	rooms "groupproject3-airbnb-api/features/rooms/data"
+	user "groupproject3-airbnb-api/features/user/data"
 	"log"
 
 	"gorm.io/driver/mysql"
@@ -23,6 +24,8 @@ func InitDB(dc config.DBConfig) *gorm.DB {
 }
 
 func Migrate(db *gorm.DB) {
-	db.AutoMigrate(uData.User{})
-
+	db.AutoMigrate(
+		user.User{},
+		rooms.Room{},
+	)
 }

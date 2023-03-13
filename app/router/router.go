@@ -7,4 +7,5 @@ import (
 
 func InitRouter(db *gorm.DB, e *echo.Echo) {
 	userRouter(db, e)
+	roomRouter(db, e)
 }
