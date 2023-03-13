@@ -113,3 +113,18 @@ func (uq *userQuery) Deactivate(userID uint) error {
 
 	return nil
 }
+
+func (uq *userQuery) UpgradeHost(userID uint, approvement string) (user.Core, error) {
+	getID := User{}
+	if approvement == "yes" {
+		getID.Role = "Host"
+	}
+
+	err := uq.db.Where("id = ?", userID).First(&getID).Error
+	if err != nil {
+		log.Println("get user error : ", err.Error())
+		return user.Core{}, errors.New("failed to upgrade to host")
+	}
+
+	return ToCore(getID), nil
+}
