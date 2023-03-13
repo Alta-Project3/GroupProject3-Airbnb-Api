@@ -121,3 +121,20 @@ func (uuc *userUseCase) Deactivate(token interface{}) error {
 	}
 	return nil
 }
+
+func (uuc *userUseCase) UpgradeHost(token interface{}, approvement string) (user.Core, error) {
+	id := helper.ExtractToken(token)
+	res, err := uuc.qry.UpgradeHost(uint(id), approvement)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "account not registered"
+		} else if strings.Contains(err.Error(), "email") {
+			msg = "email duplicated"
+		} else if strings.Contains(err.Error(), "access denied") {
+			msg = "access denied"
+		}
+		return user.Core{}, errors.New(msg)
+	}
+	return res, nil
+}
