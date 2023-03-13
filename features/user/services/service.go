@@ -122,9 +122,9 @@ func (uuc *userUseCase) Deactivate(token interface{}) error {
 	return nil
 }
 
-func (uuc *userUseCase) UpgradeHost(token interface{}, approvement string) (user.Core, error) {
+func (uuc *userUseCase) UpgradeHost(token interface{}, approvement user.Core) error {
 	id := helper.ExtractToken(token)
-	res, err := uuc.qry.UpgradeHost(uint(id), approvement)
+	err := uuc.qry.UpgradeHost(uint(id), approvement)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -134,7 +134,7 @@ func (uuc *userUseCase) UpgradeHost(token interface{}, approvement string) (user
 		} else if strings.Contains(err.Error(), "access denied") {
 			msg = "access denied"
 		}
-		return user.Core{}, errors.New(msg)
+		return errors.New(msg)
 	}
-	return res, nil
+	return nil
 }
