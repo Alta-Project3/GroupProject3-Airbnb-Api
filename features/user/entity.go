@@ -23,6 +23,7 @@ type UserHandler interface {
 	Profile() echo.HandlerFunc
 	Update() echo.HandlerFunc
 	Deactivate() echo.HandlerFunc
+	UpgradeHost() echo.HandlerFunc
 }
 
 type UserService interface {
@@ -31,6 +32,7 @@ type UserService interface {
 	Profile(token interface{}) (Core, error)
 	Update(token interface{}, fileData multipart.FileHeader, updateData Core) (Core, error)
 	Deactivate(token interface{}) error
+	UpgradeHost(token interface{}) error
 }
 
 type UserData interface {
@@ -39,4 +41,5 @@ type UserData interface {
 	Profile(userID uint) (Core, error)
 	Update(userID uint, updateData Core) (Core, error)
 	Deactivate(userID uint) error
+	UpgradeHost(userID uint) error
 }
