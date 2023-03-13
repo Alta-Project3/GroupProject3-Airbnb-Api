@@ -25,4 +25,5 @@ func userRouter(db *gorm.DB, e *echo.Echo) {
 	g.GET("", uHandler.Profile())
 	g.PUT("", uHandler.Update())
 	g.DELETE("", uHandler.Deactivate())
+	g.POST("/upgrade", uHandler.UpgradeHost())
 }

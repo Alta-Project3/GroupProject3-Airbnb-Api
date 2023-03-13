@@ -15,6 +15,7 @@ type Core struct {
 	Phone          string
 	Address        string
 	Role           string
+	Approvement    string
 }
 
 type UserHandler interface {

@@ -19,6 +19,10 @@ type LoginRequest struct {
 	Password string `json:"password" form:"password"`
 }
 
+type ApproveRequest struct {
+	Approvement string `json:"approvement" form:"approvement"`
+}
+
 func ReqToCore(data interface{}) *user.Core {
 	res := user.Core{}
 
@@ -34,6 +38,9 @@ func ReqToCore(data interface{}) *user.Core {
 		cnv := data.(LoginRequest)
 		res.Email = cnv.Email
 		res.Password = cnv.Password
+	case ApproveRequest:
+		cnv := data.(ApproveRequest)
+		res.Approvement = cnv.Approvement
 	default:
 		return nil
 	}
