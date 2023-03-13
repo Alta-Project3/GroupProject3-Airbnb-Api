@@ -147,6 +147,7 @@ paths:
                   email: "alifmuhamadhafidz23@gmail.com"
                   phone: "0813456"
                   address: "Bangka"
+                  role: "User"
                 message: "success show profile"
         400:
           $ref: "#/components/responses/400"
@@ -292,9 +293,9 @@ paths:
         500:
           $ref: "#/components/responses/500"
 
-####################################
-#  ROOM
-####################################
+  ####################################
+  #  ROOM
+  ####################################
   /rooms:
     get:
       tags:
@@ -303,49 +304,41 @@ paths:
       security:
         - JWTAuth: []
       responses:
-        '200':
-          description: A list of all room
+        200:
+          description: "get all room"
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Room'
-              
-              examples:
-                teamData:
-                  description: "Example data room"
-                  value: {
-                    status: true,
-                    message: "-",
-                    data : [
-                      {
-                        "id": 1,
-                        "user_id" : 1,
-                        "room_name": "Villa Bali Green",
-                        "price": 25000,
-                        "description": "string",
-                        "latitude": 29.4,
-                        "longitude": 30.5
-                      },
-                      {
-                        "id": 2,
-                        "user_id" : 2,
-                        "room_name": "Villa Bali Green",
-                        "price": 25000,
-                        "description": "string",
-                        "latitude": 29.4,
-                        "longitude": 30.5
-                      }
-                    ]
-                  }
-        '404':
-          $ref: '#/components/responses/404'
-        '401' :
-          $ref: '#/components/responses/401'
-        '500' :
-          $ref: '#/components/responses/500'
-
+                type: object
+              example:
+                data:
+                  [
+                    {
+                      id: 1,
+                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
+                      "user_id": 1,
+                      "room_name": "Villa Bali Green",
+                      "price": 25000,
+                      "description": "string",
+                      "latitude": 29.4,
+                      "longitude": 30.5,
+                    },
+                    {
+                      id: 2,
+                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
+                      "user_id": 2,
+                      "room_name": "Villa Bali Green",
+                      "price": 25000,
+                      "description": "string",
+                      "latitude": 29.4,
+                      "longitude": 30.5,
+                    },
+                  ]
+                message: "success show all room"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
     post:
       tags:
         - Room
@@ -356,6 +349,15 @@ paths:
         description: The room to create
         required: true
         content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                room_picture:
+                  type: string
+                  format: binary
+            example:
+              room_picture: "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
           application/json:
             schema:
               type: object
@@ -367,9 +369,6 @@ paths:
                 - latitude
                 - longitude
               properties:
-                user_id:
-                  type: integer
-                  description: ID from user
                 room_name:
                   type: string
                   description: Room name
@@ -386,33 +385,21 @@ paths:
                   type: integer
                   description: longitude
       responses:
-        '201':
-          description: Created room
+        201:
+          description: "success insert data"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
-
-              examples:
-                classData:
-                  description: "Example data room"
-                  value: {
-                    status: true,
-                    message: "Create data success",
-                    data : 
-                      {
-                        "id": 1,
-                        "user_id" : 1,
-                        "room_name": "Villa Bali Green",
-                        "price": 25000,
-                        "description": "string",
-                        "latitude": 29.4,
-                        "longitude": 30.5
-                      }
-                  }
-        '500' :
-          $ref: '#/components/responses/500'
-
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success post a room"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
   /rooms/{id}:
     parameters:
       - in: path
@@ -421,50 +408,37 @@ paths:
         description: The ID of the room to retrieve or update
         schema:
           type: integer
-
     get:
       tags:
-      - Room
+        - Room
       summary: Get a room by ID
       security:
         - JWTAuth: []
       responses:
-        '200':
-          description: The requested room
+        200:
+          description: "get book details"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
-              
-              examples:
-                teamData:
-                  description: "Example data class"
-                  value: {
-                    status: true,
-                    message: "-",
-                    data : 
-                      {
-                        "id": 1,
-                        "user_id" : 1,
-                        "room_name": "Villa Bali Green",
-                        "price": 25000,
-                        "description": "string",
-                        "latitude": 29.4,
-                        "longitude": 30.5
-                      }
-                  }
-        '400':
-          $ref: '#/components/responses/400'
-        '404':
-          $ref: '#/components/responses/404'
-        '401' :
-          $ref: '#/components/responses/401'
-        '500' :
-          $ref: '#/components/responses/500'
-
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
+                  "user_id": 1
+                  "room_name": "Villa Bali Green"
+                  "price": 25000
+                  "description": "string"
+                  "latitude": 29.4
+                  "longitude": 30.5
+                message: "success get room details"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
     put:
       tags:
-      - Room
+        - Room
       summary: Update a room by ID
       security:
         - JWTAuth: []
@@ -472,6 +446,15 @@ paths:
         description: The updated room
         required: true
         content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                room_picture:
+                  type: string
+                  format: binary
+            example:
+              room_picture: "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
           application/json:
             schema:
               type: object
@@ -495,124 +478,263 @@ paths:
                   type: integer
                   description: longitude
       responses:
-        '200':
-          description: The updated room
+        200:
+          description: success update book
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
-              
-              examples:
-                teamData:
-                  description: "Example data room"
-                  value: {
-                    status: true,
-                    message: "Update data success",
-                    data : 
-                      {
-                        "id": 1,
-                        "user_id" : 1,
-                        "room_name": "Villa Bali Green",
-                        "price": 25000,
-                        "description": "string",
-                        "latitude": 29.4,
-                        "longitude": 30.5
-                      }
-                  }
-        '400':
-          $ref: '#/components/responses/400'
-        '404':
-          $ref: '#/components/responses/404'
-        '401' :
-          $ref: '#/components/responses/401'
-        '500' :
-          $ref: '#/components/responses/500'
-
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  id: 1
+                  "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
+                  "user_id": 1
+                  "room_name": "Villa Bali Green"
+                  "price": 25000
+                  "description": "string"
+                  "latitude": 29.4
+                  "longitude": 30.5
+                message: "success update book"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        500:
+          $ref: "#/components/responses/500"
     delete:
       tags:
-      - Room
-      summary: Delete a room by ID
+        - Room
+      description: delete room by room id
+      summary: delete room by room id
       security:
         - JWTAuth: []
       responses:
-        '204':
-          description: The room was successfully deleted
-          content:
-            application/json:
-              examples:
-                teamData:
-                  description: "Delete team"
-                  value: {
-                    status: true,
-                    message: "Delete data success"
-                  }
-        '400':
-          $ref: '#/components/responses/400'
-        '404':
-          $ref: '#/components/responses/404'
-        '401' :
-          $ref: '#/components/responses/401'
-        '500' :
-          $ref: '#/components/responses/500'
-
-  /users/{id}/rooms:
-    parameters:
-      - in: path
-        name: id
-        required: true
-        description: The ID of the user
-        schema:
-          type: integer
-
-    get:
-      tags:
-      - Room
-      summary: Get a room by User ID
-      security:
-        - JWTAuth: []
-      responses:
-        '200':
-          description: The requested room
+        200:
+          description: success delete room
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Room'
-              
-              examples:
-                teamData:
-                  description: "Example data class"
-                  value: {
-                    status: true,
-                    message: "-",
-                    data : 
-                      {
-                        "id": 1,
-                        "user_id" : 1,
-                        "room_name": "Villa Bali Green",
-                        "price": 25000,
-                        "description": "string",
-                        "latitude": 29.4,
-                        "longitude": 30.5
-                      },
-                      {
-                        "id": 1,
-                        "user_id" : 2,
-                        "room_name": "Villa Bali Green",
-                        "price": 25000,
-                        "description": "string",
-                        "latitude": 29.4,
-                        "longitude": 30.5
-                      }
-                  }
-        '400':
-          $ref: '#/components/responses/400'
-        '404':
-          $ref: '#/components/responses/404'
-        '401' :
-          $ref: '#/components/responses/401'
-        '500' :
-          $ref: '#/components/responses/500'
-
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success delete room"
+        400:
+          $ref: "#/components/responses/400"
+        404:
+          description: data not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "data not found"
+        500:
+          $ref: "#/components/responses/500"
+  /users/rooms:
+    get:
+      tags:
+        - Room
+      summary: get all user room
+      description: get all user room
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: success get all user room
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  [
+                    {
+                      "id": 1,
+                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
+                      "user_id": 1,
+                      "room_name": "Villa Bali Green",
+                      "price": 25000,
+                      "description": "string",
+                      "latitude": 29.4,
+                      "longitude": 30.5,
+                    },
+                    {
+                      "id": 2,
+                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
+                      "user_id": 1,
+                      "room_name": "Villa Bali Green",
+                      "price": 25000,
+                      "description": "string",
+                      "latitude": 29.4,
+                      "longitude": 30.5,
+                    },
+                  ]
+                message: "success get all user room"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  /reservations/check:
+    post:
+      tags:
+        - Reservations
+      summary: "Create Reservation"
+      description: "Create New Reservation"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                room_id:
+                  type: integer
+                date_start:
+                  type: string
+                date_end:
+                  type: string
+            example:
+              room_id: 1
+              date_start: "2023-03-13"
+              date_end: "2023-03-17"
+      responses:
+        201:
+          description: "success check reservation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  room_id: 1
+                  date_start: "2023-03-13"
+                  date_end: "2023-03-17"
+                message: "success check reservation"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  /reservations:
+    post:
+      tags:
+        - Reservations
+      summary: "Create reservation payment"
+      description: "Insert data payment for reservation"
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Reservation"
+            example:
+              room_id: 1
+              date_start: "2023-03-13"
+              date_end: "2023-03-17"
+              duration: 2
+              total_price: 4000000
+              name: "alif"
+              card_number: "0110 4567 8795 4523"
+              cvv: "579"
+              month: "april"
+              year: "2021"
+      responses:
+        200:
+          description: "success create reservation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                message: "success create reservation"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    get:
+      tags:
+        - Reservations
+      summary: "Get all data reservation from user"
+      description: "get all your data reservation"
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "success get user reservation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  - room_id: 1
+                    room_name: "Villa puncak"
+                    date_start: "2023-03-13"
+                    date_end: "2023-03-17"
+                    address: "somewhere"
+                    total_price: 4000000
+                  - room_id: 1
+                    room_name: "Villa Bali Green"
+                    date_start: "2023-03-13"
+                    date_end: "2023-03-17"
+                    address: "somewhere"
+                    total_price: 4000000
+                message: "sucess get user reservation"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  /feedbacks:
+    post:
+      tags:
+        - Feedbacks
+      summary: create feedback
+      description: create feedback
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Feedback"
+            example:
+              room_id: 1
+              rating: "*****"
+              feedback: "rumahnya sangat bagus"
+      responses:
+        201:
+          description: "success insert data"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "success add feedback"
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
 ####################################
 #  COMPONENT
 ####################################
@@ -799,8 +921,7 @@ components:
           type: string
           format: date-time
           description: The date and time the team was deleted
-  
-  
+
   responses:
     204:
       description: Delete data success
@@ -816,7 +937,7 @@ components:
           example:
             status: true
             message: "Delete data success"
-            data : []
+            data: []
 
     400:
       description: "error from user"
@@ -857,7 +978,7 @@ components:
           example:
             status: false
             message: "data not found"
-    
+
     500:
       description: "error from server"
       content:
