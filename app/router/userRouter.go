@@ -6,8 +6,8 @@ import (
 	usrHdl "groupproject3-airbnb-api/features/user/handler"
 	usrSrv "groupproject3-airbnb-api/features/user/services"
 
-	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"gorm.io/gorm"
 )
 
@@ -20,10 +20,9 @@ func userRouter(db *gorm.DB, e *echo.Echo) {
 	e.POST("/register", uHandler.Register())
 	e.POST("/login", uHandler.Login())
 
-	g := e.Group("/users")
-	g.Use(echojwt.JWT([]byte(config.JWTKey)))
-	g.GET("", uHandler.Profile())
-	g.PUT("", uHandler.Update())
-	g.DELETE("", uHandler.Deactivate())
-	g.POST("/upgrade", uHandler.UpgradeHost())
+	// USER
+	e.GET("/users", uHandler.Profile(), middleware.JWT([]byte(config.JWTKey)))
+	e.PUT("/users", uHandler.Update(), middleware.JWT([]byte(config.JWTKey)))
+	e.DELETE("/users", uHandler.Deactivate(), middleware.JWT([]byte(config.JWTKey)))
+	e.POST("/users/upgrade", uHandler.UpgradeHost(), middleware.JWT([]byte(config.JWTKey)))
 }

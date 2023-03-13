@@ -173,7 +173,7 @@ func (uc *userControll) UpgradeHost() echo.HandlerFunc {
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"data":    ToResponse(res),
-			"message": "success login",
+			"message": "success upgrade user to host",
 		})
 	}
 }

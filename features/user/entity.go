@@ -33,7 +33,7 @@ type UserService interface {
 	Profile(token interface{}) (Core, error)
 	Update(token interface{}, fileData multipart.FileHeader, updateData Core) (Core, error)
 	Deactivate(token interface{}) error
-	UpgradeHost(token interface{}, approvement string) (Core, error)
+	UpgradeHost(token interface{}, approvement string) error
 }
 
 type UserData interface {
@@ -42,5 +42,5 @@ type UserData interface {
 	Profile(userID uint) (Core, error)
 	Update(userID uint, updateData Core) (Core, error)
 	Deactivate(userID uint) error
-	UpgradeHost(userID uint, approvement string) (Core, error)
+	UpgradeHost(userID uint, approvement string) error
 }
