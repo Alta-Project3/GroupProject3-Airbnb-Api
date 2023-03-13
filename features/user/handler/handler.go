@@ -152,3 +152,33 @@ func (uc *userControll) Deactivate() echo.HandlerFunc {
 		})
 	}
 }
+
+func (uc *userControll) UpgradeHost() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		input := ApproveRequest{}
+
+		err := c.Bind(&input)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, "input format incorrect")
+		}
+
+		if input.Approvement == "yes" {
+			input.Role = "Host"
+		} else {
+			input.Role = "User"
+		}
+
+		err = uc.srv.UpgradeHost(c.Get("user"), *ReqToCore(input))
+
+		if err != nil {
+			if strings.Contains(err.Error(), "password") {
+				return c.JSON(http.StatusBadRequest, map[string]interface{}{"message": "password not match"})
+			} else {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{"message": "account not registered"})
+			}
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"message": "success upgrade user to host",
+		})
+	}
+}
