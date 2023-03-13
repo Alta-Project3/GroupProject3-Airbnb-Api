@@ -162,7 +162,13 @@ func (uc *userControll) UpgradeHost() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, "input format incorrect")
 		}
 
-		res, err := uc.srv.UpgradeHost(c.Get("user"), input.Approvement)
+		if input.Approvement == "yes" {
+			input.Role = "Host"
+		} else {
+			input.Role = "User"
+		}
+
+		err = uc.srv.UpgradeHost(c.Get("user"), *ReqToCore(input))
 
 		if err != nil {
 			if strings.Contains(err.Error(), "password") {
@@ -172,7 +178,6 @@ func (uc *userControll) UpgradeHost() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"data":    ToResponse(res),
 			"message": "success upgrade user to host",
 		})
 	}
