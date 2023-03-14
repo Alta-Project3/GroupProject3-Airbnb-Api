@@ -16,10 +16,18 @@ func New(db *gorm.DB) reservations.ReservationDataInterface {
 	}
 }
 
+func (q *query) SelectyReservation(userId uint) ([]reservations.ReservationEntity, error) {
+	var reservations []Reservation
+	err := q.db.Preload("User").Preload("Room").Where("user_id = ?", userId).Find(&reservations)
+	if err.Error != nil {
+		return nil, err.Error
+	}
+	return ListReservationToReservationEntity(reservations), nil
+}
+
 func (q *query) SelectyRoomAndDateRange(reservationEntity reservations.ReservationEntity) ([]reservations.ReservationEntity, error) {
 	var reservations []Reservation
-	err := q.db.Preload("User").
-		Where("room_id = ? AND (date_start BETWEEN ? AND ? OR date_end BETWEEN ? AND ?)", reservationEntity.RoomId, reservationEntity.DateStart, reservationEntity.DateEnd, reservationEntity.DateStart, reservationEntity.DateEnd).
+	err := q.db.Where("room_id = ? AND (date_start BETWEEN ? AND ? OR date_end BETWEEN ? AND ?)", reservationEntity.RoomId, reservationEntity.DateStart, reservationEntity.DateEnd, reservationEntity.DateStart, reservationEntity.DateEnd).
 		Find(&reservations)
 	if err.Error != nil {
 		return nil, err.Error

@@ -72,6 +72,6 @@ func (*ReservationService) Create(reservationEntity reservations.ReservationEnti
 }
 
 // GetByRoomAndDateRange implements reservations.ReservationServiceInterface
-func (*ReservationService) GetByRoomAndDateRange() ([]reservations.ReservationEntity, error) {
-	panic("unimplemented")
+func (s *ReservationService) GetReservation(userId uint) ([]reservations.ReservationEntity, error) {
+	return s.Data.SelectyReservation(uint(userId))
 }

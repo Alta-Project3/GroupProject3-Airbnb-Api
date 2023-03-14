@@ -7,13 +7,13 @@ import (
 )
 
 type RoomResponse struct {
-	Id          uint                 `json:"id"`
-	UserId      uint                 `json:"user_id"`
+	Id          uint                 `json:"id,omitempty"`
+	UserId      uint                 `json:"user_id,omitempty"`
 	RoomName    string               `json:"room_name"`
-	Price       int                  `json:"price"`
-	Description string               `json:"description"`
-	Latitude    float64              `json:"latitude"`
-	Longitude   float64              `json:"longitude"`
+	Price       int                  `json:"price,omitempty"`
+	Description string               `json:"description,omitempty"`
+	Latitude    float64              `json:"latitude,omitempty"`
+	Longitude   float64              `json:"longitude,omitempty"`
 	User        handler.UserResponse `json:"user,omitempty"`
 }
 

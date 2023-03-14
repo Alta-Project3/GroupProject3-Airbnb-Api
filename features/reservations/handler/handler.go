@@ -32,3 +32,13 @@ func (t *ReservationHandler) CheckAvailability(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, helper.ResponseSuccess("available", nil))
 }
+
+func (t *ReservationHandler) GetReservation(c echo.Context) error {
+	userId := helper.ExtractToken(c.Get("user"))
+	reservations, err := t.Service.GetReservation(uint(userId))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.ResponseFail(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.ResponseSuccess("available", ListReservationEntityToReservationResponse(reservations)))
+}

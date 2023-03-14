@@ -24,12 +24,13 @@ type ReservationEntity struct {
 }
 
 type ReservationServiceInterface interface {
-	GetByRoomAndDateRange() ([]ReservationEntity, error)
+	GetReservation(userId uint) ([]ReservationEntity, error)
 	CheckAvailability(reservationEntity ReservationEntity) (bool, error)
 	Create(reservationEntity ReservationEntity) (ReservationEntity, error)
 }
 
 type ReservationDataInterface interface {
+	SelectyReservation(userId uint) ([]ReservationEntity, error)
 	SelectyRoomAndDateRange(reservationEntity ReservationEntity) ([]ReservationEntity, error)
 	Store(reservationEntity ReservationEntity) (uint, error)
 }
