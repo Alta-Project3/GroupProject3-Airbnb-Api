@@ -9,6 +9,7 @@ type UserResponse struct {
 	ID    uint   `json:"id,omitempty"`
 	Name  string `json:"name,omitempty"`
 	Email string `json:"email,omitempty"`
+	Role  string `json:"role,omitempty"`
 }
 
 func ToResponse(data user.Core) UserResponse {
@@ -16,6 +17,7 @@ func ToResponse(data user.Core) UserResponse {
 		ID:    data.ID,
 		Name:  data.Name,
 		Email: data.Email,
+		Role:  data.Role,
 	}
 }
 
