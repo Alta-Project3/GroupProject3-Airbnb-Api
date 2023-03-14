@@ -5,6 +5,10 @@ import (
 	"groupproject3-airbnb-api/features/user"
 	"groupproject3-airbnb-api/helper"
 	"groupproject3-airbnb-api/mocks"
+	"log"
+	"mime/multipart"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/golang-jwt/jwt"
@@ -132,5 +136,86 @@ func TestProfile(t *testing.T) {
 		assert.ErrorContains(t, err, "server")
 		assert.Equal(t, user.Core{}, res)
 		repo.AssertExpectations(t)
+	})
+}
+
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewUserData(t)
+	filePath := filepath.Join("..", "..", "..", "Group2_ERD.jpg")
+	imageTrue, err := os.Open(filePath)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	imageTrueCnv := &multipart.FileHeader{
+		Filename: imageTrue.Name(),
+	}
+
+	inputData := user.Core{ID: 1, Name: "Alif", Phone: "08123"}
+	resData := user.Core{ID: 1, Name: "Alif", Phone: "08123"}
+
+	t.Run("success updating account", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(resData, nil).Once()
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Update(pToken, *imageTrueCnv, inputData)
+		assert.Nil(t, err)
+		assert.Equal(t, resData.ID, res.ID)
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("fail updating account", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(user.Core{}, errors.New("user not found")).Once()
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Update(pToken, *imageTrueCnv, inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "not registered")
+		assert.Equal(t, user.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+	t.Run("email duplicated", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(user.Core{}, errors.New("email duplicated")).Once()
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Update(pToken, *imageTrueCnv, inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "email duplicated")
+		assert.Equal(t, user.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+	t.Run("access denied", func(t *testing.T) {
+		repo.On("Update", uint(1), mock.Anything).Return(user.Core{}, errors.New("access denied")).Once()
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Update(pToken, *imageTrueCnv, inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "access denied")
+		assert.Equal(t, user.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("invalid file validation", func(t *testing.T) {
+		filePathFake := filepath.Join("..", "..", "..", "test.csv")
+		headerFake, err := helper.UnitTestingUploadFileMock(filePathFake)
+		if err != nil {
+			log.Panic("from file header", err.Error())
+		}
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Update(pToken, *headerFake, inputData)
+		assert.ErrorContains(t, err, "validate")
+		assert.Equal(t, uint(0), res.ID)
+		repo.AssertExpectations(t)
+
 	})
 }
