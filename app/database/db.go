@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"groupproject3-airbnb-api/app/config"
+	reservations "groupproject3-airbnb-api/features/reservations/data"
 	rooms "groupproject3-airbnb-api/features/rooms/data"
 	user "groupproject3-airbnb-api/features/user/data"
 	"log"
@@ -27,5 +28,6 @@ func Migrate(db *gorm.DB) {
 	db.AutoMigrate(
 		user.User{},
 		rooms.Room{},
+		reservations.Reservation{},
 	)
 }

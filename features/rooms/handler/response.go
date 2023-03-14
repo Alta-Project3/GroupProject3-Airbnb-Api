@@ -8,7 +8,7 @@ import (
 
 type RoomResponse struct {
 	Id          uint                 `json:"id"`
-	UserId      string               `json:"user_id"`
+	UserId      uint                 `json:"user_id"`
 	RoomName    string               `json:"room_name"`
 	Price       int                  `json:"price"`
 	Description string               `json:"description"`
@@ -20,6 +20,7 @@ type RoomResponse struct {
 func RoomEntityToRoomResponse(roomEntity rooms.RoomEntity) RoomResponse {
 	result := RoomResponse{
 		Id:          roomEntity.Id,
+		UserId:      roomEntity.UserId,
 		RoomName:    roomEntity.RoomName,
 		Price:       roomEntity.Price,
 		Description: roomEntity.Description,
@@ -29,6 +30,7 @@ func RoomEntityToRoomResponse(roomEntity rooms.RoomEntity) RoomResponse {
 
 	if !reflect.ValueOf(roomEntity.User).IsZero() {
 		result.User = handler.UserResponse{
+			ID:    roomEntity.UserId,
 			Name:  roomEntity.User.Name,
 			Email: roomEntity.User.Email,
 		}

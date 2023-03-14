@@ -13,6 +13,7 @@ type RoomRequest struct {
 
 func RoomRequestToRoomEntity(roomRequest *RoomRequest) rooms.RoomEntity {
 	return rooms.RoomEntity{
+		UserId:      roomRequest.UserId,
 		RoomName:    roomRequest.RoomName,
 		Price:       roomRequest.Price,
 		Description: roomRequest.Description,
