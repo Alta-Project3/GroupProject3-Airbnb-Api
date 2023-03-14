@@ -7,6 +7,7 @@ import (
 	"groupproject3-airbnb-api/mocks"
 	"testing"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -79,7 +80,7 @@ func TestLogin(t *testing.T) {
 	})
 
 	t.Run("password not matched", func(t *testing.T) {
-		inputEmail := "lip23"
+		inputEmail := "alif@gmail.com"
 		repo.On("Login", inputEmail).Return(resData, nil).Once()
 		srv := New(repo)
 		_, res, err := srv.Login(inputEmail, "342")
@@ -91,7 +92,7 @@ func TestLogin(t *testing.T) {
 	})
 
 	t.Run("server problem", func(t *testing.T) {
-		inputEmail := "alif23"
+		inputEmail := "alif@gmail.com"
 		repo.On("Login", inputEmail).Return(user.Core{}, errors.New("There is a problem with the server")).Once()
 
 		srv := New(repo)
@@ -99,6 +100,36 @@ func TestLogin(t *testing.T) {
 		assert.NotNil(t, err)
 		assert.ErrorContains(t, err, "server")
 		assert.Empty(t, token)
+		assert.Equal(t, user.Core{}, res)
+		repo.AssertExpectations(t)
+	})
+}
+
+func TestProfile(t *testing.T) {
+	repo := mocks.NewUserData(t)
+	resData := user.Core{ID: uint(1), Name: "Alif", Email: "alif@gmail.com", Phone: "081234"}
+
+	t.Run("success show profile", func(t *testing.T) {
+		repo.On("Profile", uint(1)).Return(resData, nil).Once()
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Profile(pToken)
+		assert.Nil(t, err)
+		assert.Equal(t, resData.ID, res.ID)
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("account not found", func(t *testing.T) {
+		repo.On("Profile", uint(1)).Return(user.Core{}, errors.New("query error, problem with server")).Once()
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Profile(pToken)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "server")
 		assert.Equal(t, user.Core{}, res)
 		repo.AssertExpectations(t)
 	})
