@@ -219,3 +219,30 @@ func TestUpdate(t *testing.T) {
 
 	})
 }
+
+func TestDeactivate(t *testing.T) {
+	repo := mocks.NewUserData(t)
+	t.Run("deleting account successful", func(t *testing.T) {
+		repo.On("Deactivate", uint(1)).Return(nil).Once()
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+
+		err := srv.Deactivate(pToken)
+		assert.Nil(t, err)
+		repo.AssertExpectations(t)
+	})
+	t.Run("internal server error, account fail to delete", func(t *testing.T) {
+		repo.On("Deactivate", uint(1)).Return(errors.New("no user has delete")).Once()
+		srv := New(repo)
+
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		err := srv.Deactivate(pToken)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "error")
+		repo.AssertExpectations(t)
+	})
+}
