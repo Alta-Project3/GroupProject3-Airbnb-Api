@@ -39,9 +39,14 @@ func (fuc *feedbackUseCase) Create(token interface{}, roomID uint, newFeedback f
 	return res, nil
 }
 
-// GetAll implements feedback.FeedbackService
-func (*feedbackUseCase) GetAll() ([]feedback.Core, error) {
-	panic("unimplemented")
+func (fuc *feedbackUseCase) GetUserFeedback(token interface{}) ([]feedback.Core, error) {
+	userID := helper.ExtractToken(token)
+	res, err := fuc.qry.GetUserFeedback(uint(userID))
+	if err != nil {
+		log.Println("query error", err.Error())
+		return []feedback.Core{}, errors.New("query error, problem with server")
+	}
+	return res, nil
 }
 
 // GetByID implements feedback.FeedbackService
