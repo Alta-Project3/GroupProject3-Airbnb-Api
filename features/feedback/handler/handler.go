@@ -2,8 +2,11 @@ package handler
 
 import (
 	"groupproject3-airbnb-api/features/feedback"
+	"groupproject3-airbnb-api/helper"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -57,8 +60,27 @@ func (fc *feedbackControll) GetUserFeedback() echo.HandlerFunc {
 }
 
 // GetByID implements feedback.FeedbackHandler
-func (*feedbackControll) GetByID() echo.HandlerFunc {
-	panic("unimplemented")
+func (fc *feedbackControll) GetByID() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Get("user")
+		paramID := c.Param("id")
+		feedbackID, err := strconv.Atoi(paramID)
+		if err != nil {
+			log.Println("convert id error", err.Error())
+			return c.JSON(http.StatusBadGateway, "Invalid input")
+		}
+
+		res, err := fc.srv.GetByID(token, uint(feedbackID))
+
+		if err != nil {
+			if strings.Contains(err.Error(), "feedback") {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{
+					"message": "feedback not found",
+				})
+			}
+		}
+		return c.JSON(helper.PrintSuccessResponse(http.StatusOK, "success get feedback detail", ToFeedbackResponse(res)))
+	}
 }
 
 // Update implements feedback.FeedbackHandler
