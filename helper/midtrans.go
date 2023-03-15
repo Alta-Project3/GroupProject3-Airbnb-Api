@@ -1,6 +1,8 @@
 package helper
 
-import "github.com/Findryankp/snapMidtransGo"
+import (
+	"github.com/Findryankp/snapMidtransGo"
+)
 
 func PostMidtrans(data map[string]any) (string, error) {
 	var postData = snapMidtransGo.DataPostMidtrans{
@@ -13,5 +15,6 @@ func PostMidtrans(data map[string]any) (string, error) {
 		ServerKey: "SB-Mid-server-yuKf_hATRAfp_VES1wdZMnSs",
 	}
 
-	return snapMidtransGo.SanboxRequestSnapMidtrans(postData)
+	test, err := snapMidtransGo.SanboxRequestSnapMidtrans(postData)
+	return test, err
 }

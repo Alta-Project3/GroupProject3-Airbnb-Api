@@ -34,6 +34,7 @@ func ReservationEntityToReservation(reservationEntity reservations.ReservationEn
 		Duration:          reservationEntity.Duration,
 		TotalPrice:        reservationEntity.TotalPrice,
 		StatusReservation: reservationEntity.StatusReservation,
+		PaymentLink:       reservationEntity.PaymentLink,
 	}
 }
 
@@ -47,6 +48,7 @@ func ReservationToReservationEntity(reservation Reservation) reservations.Reserv
 		Duration:          reservation.Duration,
 		TotalPrice:        reservation.TotalPrice,
 		StatusReservation: reservation.StatusReservation,
+		PaymentLink:       reservation.PaymentLink,
 	}
 
 	if !reflect.ValueOf(reservation.User).IsZero() {

@@ -2,8 +2,10 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"groupproject3-airbnb-api/features/reservations"
 	"groupproject3-airbnb-api/helper"
+	"strconv"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -97,20 +99,19 @@ func (s *ReservationService) Create(reservationEntity reservations.ReservationEn
 
 	duration := helper.CountRangeDate(dateStart, dateEnd)
 	totalPrice := reservationEntity.TotalPrice
-	//getUserData
-	reservationData, _ := s.Data.SelectById(reservationId)
 
 	//call midtrans
 	postData := map[string]any{
-		"order_id":   reservationId,
-		"nominal":    totalPrice,
-		"first_name": reservationData.User.Name,
-		"last_name":  reservationData.User.Name,
-		"email":      reservationData.User.Name,
-		"phone":      "000",
+		"order_id":  "orders-20" + strconv.Itoa(int(reservationId)),
+		"nominal":   totalPrice,
+		"firstname": "Alta",
+		"lastname":  "Room",
+		"email":     "email" + strconv.Itoa(int(reservationId)) + "@gmail.com",
+		"phone":     "000",
 	}
 
 	paymentLink, err1 := helper.PostMidtrans(postData)
+	fmt.Println("PAYMENT", paymentLink)
 	if err1 != nil {
 		return reservations.ReservationEntity{}, err
 	} else {

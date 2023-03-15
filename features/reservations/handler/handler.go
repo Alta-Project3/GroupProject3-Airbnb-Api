@@ -34,11 +34,26 @@ func (t *ReservationHandler) CheckAvailability(c echo.Context) error {
 }
 
 func (t *ReservationHandler) GetReservation(c echo.Context) error {
-	userId := helper.ExtractToken(c.Get("user"))
+	userId := helper.ClaimToken(c.Get("user"))
 	reservations, err := t.Service.GetReservation(uint(userId))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, helper.ResponseFail(err.Error()))
 	}
 
-	return c.JSON(http.StatusOK, helper.ResponseSuccess("available", ListReservationEntityToReservationResponse(reservations)))
+	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", ListReservationEntityToReservationResponse(reservations)))
+}
+
+func (t *ReservationHandler) CreateReservation(c echo.Context) error {
+	var formInput ReservationRequest
+	if err := c.Bind(&formInput); err != nil {
+		return c.JSON(http.StatusBadRequest, helper.ResponseFail("error bind data"))
+	}
+	userIdToken := helper.ClaimToken(c.Get("user"))
+	formInput.UserId = uint(userIdToken)
+	reservations, err := t.Service.Create(ReservationRequestToReservationEntity(&formInput))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFail(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", ReservationEntityToReservationResponse(reservations)))
 }

@@ -51,6 +51,10 @@ func (q *query) SelectyRoomAndDateRange(reservationEntity reservations.Reservati
 }
 
 // Store implements reservations.ReservationDataInterface
-func (*query) Store(reservationEntity reservations.ReservationEntity) (uint, error) {
-	panic("unimplemented")
+func (q *query) Store(reservationEntity reservations.ReservationEntity) (uint, error) {
+	reservation := ReservationEntityToReservation(reservationEntity)
+	if err := q.db.Create(&reservation); err.Error != nil {
+		return 0, err.Error
+	}
+	return reservation.ID, nil
 }
