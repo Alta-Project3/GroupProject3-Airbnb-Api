@@ -19,6 +19,9 @@ type Feedback struct {
 type Room struct {
 	gorm.Model
 	RoomName string
+	UserID   uint
+	Rating   float64
+	Feedback string
 }
 
 type User struct {

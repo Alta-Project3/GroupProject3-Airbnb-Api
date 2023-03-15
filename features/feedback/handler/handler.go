@@ -30,7 +30,7 @@ func (fc *feedbackControll) Create() echo.HandlerFunc {
 
 		res, err := fc.srv.Create(token, input.RoomID, *ReqToCore(input))
 		if err != nil {
-			log.Println("error running add book service: ", err.Error())
+			log.Println("error running create feedback service: ", err.Error())
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "server problem"})
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
