@@ -48,6 +48,7 @@ func RoomToRoomEntity(room Room) rooms.RoomEntity {
 		result.User = user.Core{
 			Name:  room.User.Name,
 			Email: room.User.Email,
+			Role:  room.User.Role,
 		}
 	}
 

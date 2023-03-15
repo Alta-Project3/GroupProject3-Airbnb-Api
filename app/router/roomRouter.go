@@ -24,5 +24,7 @@ func roomRouter(db *gorm.DB, e *echo.Echo) {
 	g.PUT("/:id", handler.Update)
 	g.DELETE("/:id", handler.Delete)
 
-	g.GET("/users/:id/rooms", handler.GetByUserId)
+	u := e.Group("")
+	u.Use(echojwt.JWT([]byte(config.JWTKey)))
+	u.GET("/users/:id/rooms", handler.GetByUserId)
 }

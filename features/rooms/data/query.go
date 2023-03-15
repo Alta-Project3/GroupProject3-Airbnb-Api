@@ -1,7 +1,9 @@
 package data
 
 import (
+	"errors"
 	"groupproject3-airbnb-api/features/rooms"
+	"groupproject3-airbnb-api/features/user/data"
 
 	"gorm.io/gorm"
 )
@@ -45,7 +47,16 @@ func (q *query) SelectByUserId(user_id uint) ([]rooms.RoomEntity, error) {
 	return ListRoomToRoomEntity(room), nil
 }
 
-func (q *query) Store(roomEntity rooms.RoomEntity) (uint, error) {
+func (q *query) Store(roomEntity rooms.RoomEntity, userId uint) (uint, error) {
+	var user data.User
+	if err := q.db.First(&user, userId); err.Error != nil {
+		return 0, err.Error
+	}
+
+	if user.Role == "User" {
+		return 0, errors.New("only hosting role can create the room")
+	}
+
 	var room = RoomEntityToRoom(roomEntity)
 	if err := q.db.Create(&room); err.Error != nil {
 		return 0, err.Error
