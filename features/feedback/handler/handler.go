@@ -82,7 +82,33 @@ func (fc *feedbackControll) GetByID() echo.HandlerFunc {
 	}
 }
 
-// Update implements feedback.FeedbackHandler
-func (*feedbackControll) Update() echo.HandlerFunc {
-	panic("unimplemented")
+func (fc *feedbackControll) Update() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Get("user")
+		paramID := c.Param("id")
+		feedbackID, err := strconv.Atoi(paramID)
+
+		if err != nil {
+			log.Println("convert id error", err.Error())
+			return c.JSON(http.StatusBadGateway, "Invalid input")
+		}
+
+		input := CreateFeedbackRequest{}
+
+		err = c.Bind(&input)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, "input format incorrect")
+		}
+		res, err := fc.srv.Update(token, uint(feedbackID), *ReqToCore(input))
+
+		if err != nil {
+			log.Println("error running update feedback service: ", err.Error())
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "server problem"})
+		}
+		return c.JSON(http.StatusCreated, map[string]interface{}{
+			"data":    ToFeedbackResponse(res),
+			"message": "success add feedback",
+		})
+
+	}
 }
