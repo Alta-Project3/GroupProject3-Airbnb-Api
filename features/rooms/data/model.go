@@ -31,7 +31,7 @@ func RoomEntityToRoom(roomEntity rooms.RoomEntity) Room {
 		Description: roomEntity.Description,
 		Latitude:    roomEntity.Latitude,
 		Longitude:   roomEntity.Longitude,
-		Address:     roomEntity.User.Address,
+		Address:     roomEntity.Address,
 	}
 
 	return result

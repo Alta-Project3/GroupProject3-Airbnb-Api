@@ -2,6 +2,7 @@ package data
 
 import (
 	"errors"
+	"fmt"
 	"groupproject3-airbnb-api/features/rooms"
 	"groupproject3-airbnb-api/features/user/data"
 
@@ -58,6 +59,7 @@ func (q *query) Store(roomEntity rooms.RoomEntity, userId uint) (uint, error) {
 	}
 
 	var room = RoomEntityToRoom(roomEntity)
+	fmt.Println("ADDD 3", room.Address)
 	if err := q.db.Create(&room); err.Error != nil {
 		return 0, err.Error
 	}

@@ -49,6 +49,7 @@ func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint, fileData 
 	if err != nil {
 		return rooms.RoomEntity{}, errors.New("validate: " + err.Error())
 	}
+
 	roomEntity.RoomPicture = url
 	room_id, err := s.Data.Store(roomEntity, userId)
 	if err != nil {
