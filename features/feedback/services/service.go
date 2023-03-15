@@ -49,9 +49,19 @@ func (fuc *feedbackUseCase) GetUserFeedback(token interface{}) ([]feedback.Core,
 	return res, nil
 }
 
-// GetByID implements feedback.FeedbackService
-func (*feedbackUseCase) GetByID(token interface{}, feedbackID uint) (feedback.Core, error) {
-	panic("unimplemented")
+func (fuc *feedbackUseCase) GetByID(token interface{}, feedbackID uint) (feedback.Core, error) {
+	userID := helper.ExtractToken(token)
+	res, err := fuc.qry.GetByID(uint(userID), feedbackID)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "feedback not found"
+		} else {
+			msg = "there is a problem with the server"
+		}
+		return feedback.Core{}, errors.New(msg)
+	}
+	return res, nil
 }
 
 // Update implements feedback.FeedbackService
