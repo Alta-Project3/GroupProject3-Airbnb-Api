@@ -251,36 +251,39 @@ func TestUpgradeHost(t *testing.T) {
 	repo := mocks.NewUserData(t)
 	inputApprovement := user.Core{ID: 1, Approvement: "yes"}
 	t.Run("success update to host", func(t *testing.T) {
-		repo.On("UpgradeHost", uint(1), inputApprovement).Return(nil).Once()
+		repo.On("UpgradeHost", uint(1), inputApprovement).Return(inputApprovement, nil).Once()
 		srv := New(repo)
 		_, token := helper.GenerateJWT(1)
 		pToken := token.(*jwt.Token)
 		pToken.Valid = true
-		err := srv.UpgradeHost(pToken, inputApprovement)
+		res, err := srv.UpgradeHost(pToken, inputApprovement)
 		assert.Nil(t, err)
+		assert.NotEqual(t, uint(0), res.ID)
 		repo.AssertExpectations(t)
 	})
 
 	t.Run("email duplicated", func(t *testing.T) {
-		repo.On("UpgradeHost", uint(1), inputApprovement).Return(errors.New("email duplicated")).Once()
+		repo.On("UpgradeHost", uint(1), inputApprovement).Return(user.Core{}, errors.New("email duplicated")).Once()
 		srv := New(repo)
 		_, token := helper.GenerateJWT(1)
 		pToken := token.(*jwt.Token)
 		pToken.Valid = true
-		err := srv.UpgradeHost(pToken, inputApprovement)
+		res, err := srv.UpgradeHost(pToken, inputApprovement)
 		assert.NotNil(t, err)
+		assert.Equal(t, uint(0), res.ID)
 		assert.ErrorContains(t, err, "email duplicated")
 		repo.AssertExpectations(t)
 	})
 
 	t.Run("access denied", func(t *testing.T) {
-		repo.On("UpgradeHost", uint(1), inputApprovement).Return(errors.New("access denied")).Once()
+		repo.On("UpgradeHost", uint(1), inputApprovement).Return(user.Core{}, errors.New("access denied")).Once()
 		srv := New(repo)
 		_, token := helper.GenerateJWT(1)
 		pToken := token.(*jwt.Token)
 		pToken.Valid = true
-		err := srv.UpgradeHost(pToken, inputApprovement)
+		res, err := srv.UpgradeHost(pToken, inputApprovement)
 		assert.NotNil(t, err)
+		assert.Equal(t, uint(0), res.ID)
 		assert.ErrorContains(t, err, "access denied")
 		repo.AssertExpectations(t)
 	})

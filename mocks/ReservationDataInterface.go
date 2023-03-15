@@ -13,6 +13,64 @@ type ReservationDataInterface struct {
 	mock.Mock
 }
 
+// Edit provides a mock function with given fields: reservationEntity, id
+func (_m *ReservationDataInterface) Edit(reservationEntity reservations.ReservationEntity, id uint) error {
+	ret := _m.Called(reservationEntity, id)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(reservations.ReservationEntity, uint) error); ok {
+		r0 = rf(reservationEntity, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// SelectById provides a mock function with given fields: id
+func (_m *ReservationDataInterface) SelectById(id uint) (reservations.ReservationEntity, error) {
+	ret := _m.Called(id)
+
+	var r0 reservations.ReservationEntity
+	if rf, ok := ret.Get(0).(func(uint) reservations.ReservationEntity); ok {
+		r0 = rf(id)
+	} else {
+		r0 = ret.Get(0).(reservations.ReservationEntity)
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// SelectyReservation provides a mock function with given fields: userId
+func (_m *ReservationDataInterface) SelectyReservation(userId uint) ([]reservations.ReservationEntity, error) {
+	ret := _m.Called(userId)
+
+	var r0 []reservations.ReservationEntity
+	if rf, ok := ret.Get(0).(func(uint) []reservations.ReservationEntity); ok {
+		r0 = rf(userId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]reservations.ReservationEntity)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(userId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // SelectyRoomAndDateRange provides a mock function with given fields: reservationEntity
 func (_m *ReservationDataInterface) SelectyRoomAndDateRange(reservationEntity reservations.ReservationEntity) ([]reservations.ReservationEntity, error) {
 	ret := _m.Called(reservationEntity)
