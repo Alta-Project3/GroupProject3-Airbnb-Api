@@ -63,19 +63,41 @@ func (fq *feedbackQuery) GetUserFeedback(userID uint) ([]feedback.Core, error) {
 			log.Println("query error", err.Error())
 			return []feedback.Core{}, errors.New("server error")
 		}
-		result[i].Rating = room.Rating
-		result[i].Feedback = room.Feedback
 	}
 	return result, nil
 
 }
 
-// GetByID implements feedback.FeedbackData
-func (*feedbackQuery) GetByID(userID uint, feedbackID uint) (feedback.Core, error) {
-	panic("unimplemented")
+func (fq *feedbackQuery) GetByID(userID uint, feedbackID uint) (feedback.Core, error) {
+	res := Feedback{}
+	if err := fq.db.Where("id = ?", feedbackID).First(&res).Error; err != nil {
+		log.Println("get feedback detail query error : ", err.Error())
+		return feedback.Core{}, errors.New("get feedback detail query error")
+	}
+	result := DataToCore(res)
+	user := User{}
+	if err := fq.db.Where("id = ?", res.UserID).First(&user).Error; err != nil {
+		log.Println("get user by id query error : ", err.Error())
+		return feedback.Core{}, errors.New("get user by id error")
+	}
+
+	return result, nil
 }
 
-// Update implements feedback.FeedbackData
-func (*feedbackQuery) Update(userID uint, feedBackID uint) (feedback.Core, error) {
-	panic("unimplemented")
+func (fq *feedbackQuery) Update(userID uint, feedBackID uint, updatedFeedback feedback.Core) (feedback.Core, error) {
+	cnv := CoreToData(updatedFeedback)
+	cnv.ID = uint(feedBackID)
+
+	qry := fq.db.Where("id = ?", feedBackID).Updates(&cnv)
+	affrows := qry.RowsAffected
+	if affrows == 0 {
+		log.Println("no rows affected")
+		return feedback.Core{}, errors.New("no data updated")
+	}
+	err := qry.Error
+	if err != nil {
+		log.Println("update feedback query error", err.Error())
+		return feedback.Core{}, errors.New("user not found")
+	}
+	return updatedFeedback, nil
 }

@@ -19,4 +19,6 @@ func feedbackRouter(db *gorm.DB, e *echo.Echo) {
 	//Feedback
 	e.POST("/feedbacks", fHandler.Create(), middleware.JWT([]byte(config.JWTKey)))
 	e.GET("/feedbacks", fHandler.GetUserFeedback(), middleware.JWT([]byte(config.JWTKey)))
+	e.GET("/feedbacks/:id", fHandler.GetByID(), middleware.JWT([]byte(config.JWTKey)))
+	e.PUT("/feedbacks/:id", fHandler.Update(), middleware.JWT([]byte(config.JWTKey)))
 }

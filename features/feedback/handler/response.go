@@ -1,6 +1,9 @@
 package handler
 
-import "groupproject3-airbnb-api/features/feedback"
+import (
+	"errors"
+	"groupproject3-airbnb-api/features/feedback"
+)
 
 type FeedbackResponse struct {
 	ID       uint    `json:"id,omitempty"`
@@ -24,4 +27,26 @@ func GetFeedbackResp(data []feedback.Core) []FeedbackResponse {
 		res = append(res, ToFeedbackResponse(v))
 	}
 	return res
+}
+
+func ConvertUpdateResponse(input feedback.Core) (interface{}, error) {
+	ResponseFilter := feedback.Core{}
+	ResponseFilter = input
+	result := make(map[string]interface{})
+	if ResponseFilter.ID != 0 {
+		result["id"] = ResponseFilter.ID
+	}
+	if ResponseFilter.RoomID != 0 {
+		result["room_id"] = ResponseFilter.RoomID
+	}
+	if ResponseFilter.Rating != 0 {
+		result["rating"] = ResponseFilter.Rating
+	}
+	if ResponseFilter.Feedback != "" {
+		result["feedback"] = ResponseFilter.Feedback
+	}
+	if len(result) <= 1 {
+		return feedback.Core{}, errors.New("no data was change")
+	}
+	return result, nil
 }
