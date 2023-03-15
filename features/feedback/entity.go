@@ -8,7 +8,7 @@ import (
 
 type Core struct {
 	ID            uint
-	UserId        uint `validate:"required"`
+	UserID        uint `validate:"required"`
 	User          user.Core
 	ReservationID uint    `validate:"required"`
 	RoomID        uint    `validate:"required"`
