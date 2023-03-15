@@ -9,6 +9,7 @@ type RoomRequest struct {
 	Description string  `json:"description" form:"description"`
 	Latitude    float64 `json:"latitude" form:"latitude"`
 	Longitude   float64 `json:"longitude" form:"longitude"`
+	Address     string  `json:"addresss" form:"address"`
 }
 
 func RoomRequestToRoomEntity(roomRequest *RoomRequest) rooms.RoomEntity {
@@ -19,5 +20,6 @@ func RoomRequestToRoomEntity(roomRequest *RoomRequest) rooms.RoomEntity {
 		Description: roomRequest.Description,
 		Latitude:    roomRequest.Latitude,
 		Longitude:   roomRequest.Longitude,
+		Address:     roomRequest.Address,
 	}
 }
