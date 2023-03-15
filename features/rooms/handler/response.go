@@ -10,6 +10,7 @@ type RoomResponse struct {
 	Id          uint                 `json:"id,omitempty"`
 	UserId      uint                 `json:"user_id,omitempty"`
 	RoomName    string               `json:"room_name"`
+	RoomPicture string               `json:"room_picture"`
 	Price       int                  `json:"price,omitempty"`
 	Description string               `json:"description,omitempty"`
 	Latitude    float64              `json:"latitude,omitempty"`
@@ -28,6 +29,7 @@ func RoomEntityToRoomResponse(roomEntity rooms.RoomEntity) RoomResponse {
 		Latitude:    roomEntity.Latitude,
 		Longitude:   roomEntity.Longitude,
 		Address:     roomEntity.Address,
+		RoomPicture: roomEntity.RoomPicture,
 	}
 
 	if !reflect.ValueOf(roomEntity.User).IsZero() {
