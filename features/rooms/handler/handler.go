@@ -54,7 +54,7 @@ func (h *RoomHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.ResponseFail("error bind data"))
 	}
 
-	userId := helper.ExtractToken(c.Get("user"))
+	userId := helper.ClaimToken(c.Get("user"))
 
 	team, err := h.Service.Create(RoomRequestToRoomEntity(&formInput), uint(userId))
 	if err != nil {
@@ -70,7 +70,7 @@ func (h *RoomHandler) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.ResponseFail("error bind data"))
 	}
 
-	userId := helper.ExtractToken(c.Get("user"))
+	userId := helper.ClaimToken(c.Get("user"))
 
 	id, _ := strconv.Atoi(c.Param("id"))
 	team, err := h.Service.Update(RoomRequestToRoomEntity(&formInput), uint(id), uint(userId))
@@ -84,7 +84,7 @@ func (h *RoomHandler) Update(c echo.Context) error {
 func (h *RoomHandler) Delete(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	userId := helper.ExtractToken(c.Get("user"))
+	userId := helper.ClaimToken(c.Get("user"))
 
 	if err := h.Service.Delete(uint(id), uint(userId)); err != nil {
 		return c.JSON(http.StatusNotFound, helper.ResponseFail(err.Error()))
