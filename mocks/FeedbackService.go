@@ -78,20 +78,20 @@ func (_m *FeedbackService) GetUserFeedback(token interface{}) ([]feedback.Core, 
 	return r0, r1
 }
 
-// Update provides a mock function with given fields: token, feedbackID
-func (_m *FeedbackService) Update(token interface{}, feedbackID uint) (feedback.Core, error) {
-	ret := _m.Called(token, feedbackID)
+// Update provides a mock function with given fields: token, feedbackID, updatedFeedback
+func (_m *FeedbackService) Update(token interface{}, feedbackID uint, updatedFeedback feedback.Core) (feedback.Core, error) {
+	ret := _m.Called(token, feedbackID, updatedFeedback)
 
 	var r0 feedback.Core
-	if rf, ok := ret.Get(0).(func(interface{}, uint) feedback.Core); ok {
-		r0 = rf(token, feedbackID)
+	if rf, ok := ret.Get(0).(func(interface{}, uint, feedback.Core) feedback.Core); ok {
+		r0 = rf(token, feedbackID, updatedFeedback)
 	} else {
 		r0 = ret.Get(0).(feedback.Core)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(interface{}, uint) error); ok {
-		r1 = rf(token, feedbackID)
+	if rf, ok := ret.Get(1).(func(interface{}, uint, feedback.Core) error); ok {
+		r1 = rf(token, feedbackID, updatedFeedback)
 	} else {
 		r1 = ret.Error(1)
 	}

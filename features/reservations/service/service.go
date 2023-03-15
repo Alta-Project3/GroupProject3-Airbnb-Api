@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"groupproject3-airbnb-api/features/reservations"
 	"groupproject3-airbnb-api/helper"
 	"strconv"
@@ -111,7 +110,6 @@ func (s *ReservationService) Create(reservationEntity reservations.ReservationEn
 	}
 
 	paymentLink, err1 := helper.PostMidtrans(postData)
-	fmt.Println("PAYMENT", paymentLink)
 	if err1 != nil {
 		return reservations.ReservationEntity{}, err
 	} else {
