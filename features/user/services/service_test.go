@@ -247,6 +247,7 @@ func TestDeactivate(t *testing.T) {
 	})
 }
 
+// s
 func TestUpgradeHost(t *testing.T) {
 	repo := mocks.NewUserData(t)
 	inputApprovement := user.Core{ID: 1, Approvement: "yes"}
