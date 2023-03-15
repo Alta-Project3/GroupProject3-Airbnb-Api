@@ -51,8 +51,6 @@ func (fq *feedbackQuery) GetUserFeedback(userID uint) ([]feedback.Core, error) {
 	result := []feedback.Core{}
 	for i := 0; i < len(res); i++ {
 		result = append(result, DataToCore(res[i]))
-		// cari data user berdasarkan cart user_id
-
 		room := Room{}
 		err = fq.db.Where("id = ?", res[i].RoomID).First(&room).Error
 		if err != nil {
@@ -65,11 +63,11 @@ func (fq *feedbackQuery) GetUserFeedback(userID uint) ([]feedback.Core, error) {
 			log.Println("query error", err.Error())
 			return []feedback.Core{}, errors.New("server error")
 		}
-		result[i].ID = room.ID
 		result[i].Rating = room.Rating
 		result[i].Feedback = room.Feedback
 	}
 	return result, nil
+
 }
 
 // GetByID implements feedback.FeedbackData

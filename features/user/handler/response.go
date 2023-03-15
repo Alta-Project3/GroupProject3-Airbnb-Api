@@ -21,6 +21,16 @@ func ToResponse(data user.Core) UserResponse {
 	}
 }
 
+type ApproveResponse struct {
+	Role string `json:"role"`
+}
+
+func ToApproveResponse(data user.Core) ApproveResponse {
+	return ApproveResponse{
+		Role: data.Role,
+	}
+}
+
 type ProfileResponse struct {
 	ID             uint   `json:"id"`
 	ProfilePicture string `json:"profile_picture"`
