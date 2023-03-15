@@ -1,36 +1,44 @@
 package feedback
 
 import (
-	"groupproject3-airbnb-api/features/user"
-	"time"
+	"github.com/labstack/echo/v4"
 )
 
-type FeedbackEntity struct {
-	Id            uint
-	UserId        uint `validate:"required"`
-	User          user.Core
-	ReservationId uint    `validate:"required"`
-	RoomId        uint    `validate:"required"`
+type Core struct {
+	ID            uint
+	UserID        uint `validate:"required"`
+	User          User
+	ReservationID uint    `validate:"required"`
+	RoomID        uint    `validate:"required"`
 	Rating        float64 `validate:"required"`
 	Feedback      string  `validate:"required"`
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
 }
 
-type FeedbackServiceInterface interface {
-	GetAll() ([]FeedbackEntity, error)
-	GetById(id uint) (FeedbackEntity, error)
-	GetByRoomId(roomId uint) ([]FeedbackEntity, error)
-	Create(feedbackEntity FeedbackEntity) (FeedbackEntity, error)
-	Update(feedbackEntity FeedbackEntity, id uint) (FeedbackEntity, error)
-	Delete(id uint) error
+type User struct {
+	ID      uint   `json:"id"`
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	Phone   string `json:"phone"`
+	Address string `json:"address"`
 }
 
-type FeedbackDataInterface interface {
-	SelectAll() ([]FeedbackEntity, error)
-	SelectById(id uint) (FeedbackEntity, error)
-	SelectByRoomId(id uint) (FeedbackEntity, error)
-	Store(feedbackEntity FeedbackEntity) (uint, error)
-	Edit(feedbackEntity FeedbackEntity, id uint) error
-	Destroy(id uint) error
+type FeedbackHandler interface {
+	Create() echo.HandlerFunc
+	GetUserFeedback() echo.HandlerFunc
+	GetByID() echo.HandlerFunc
+	Update() echo.HandlerFunc
+}
+
+type FeedbackService interface {
+	Create(token interface{}, roomID uint, newFeedback Core) (Core, error)
+	GetUserFeedback(token interface{}) ([]Core, error)
+	GetByID(token interface{}, feedbackID uint) (Core, error)
+	Update(token interface{}, feedbackID uint, updatedFeedback Core) (Core, error)
+}
+
+type FeedbackData interface {
+	Create(userID uint, roomID uint, newFeedback Core) (Core, error)
+	GetUserFeedback(userID uint) ([]Core, error)
+	GetByID(userID uint, feedbackID uint) (Core, error)
+	Update(userID uint, feedBackID uint, updatedFeedback Core) (Core, error)
 }

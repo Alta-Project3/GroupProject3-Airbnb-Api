@@ -51,14 +51,21 @@ func (h *RoomHandler) GetByUserId(c echo.Context) error {
 }
 
 func (h *RoomHandler) Create(c echo.Context) error {
+	userId := helper.ClaimToken(c.Get("user"))
 	var formInput RoomRequest
 	if err := c.Bind(&formInput); err != nil {
 		return c.JSON(http.StatusBadRequest, helper.ResponseFail("error bind data"))
 	}
 
-	userId := helper.ClaimToken(c.Get("user"))
-
-	team, err := h.Service.Create(RoomRequestToRoomEntity(&formInput), uint(userId))
+	checkFile, _, _ := c.Request().FormFile("room_picture")
+	if checkFile != nil {
+		formHeader, err := c.FormFile("room_picture")
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "Select a file to upload"})
+		}
+		formInput.FileHeader = *formHeader
+	}
+	team, err := h.Service.Create(RoomRequestToRoomEntity(&formInput), uint(userId), formInput.FileHeader)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ResponseFail(err.Error()))
 	}

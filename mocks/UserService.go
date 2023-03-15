@@ -114,17 +114,24 @@ func (_m *UserService) Update(token interface{}, fileData multipart.FileHeader, 
 }
 
 // UpgradeHost provides a mock function with given fields: token, approvement
-func (_m *UserService) UpgradeHost(token interface{}, approvement user.Core) error {
+func (_m *UserService) UpgradeHost(token interface{}, approvement user.Core) (user.Core, error) {
 	ret := _m.Called(token, approvement)
 
-	var r0 error
-	if rf, ok := ret.Get(0).(func(interface{}, user.Core) error); ok {
+	var r0 user.Core
+	if rf, ok := ret.Get(0).(func(interface{}, user.Core) user.Core); ok {
 		r0 = rf(token, approvement)
 	} else {
-		r0 = ret.Error(0)
+		r0 = ret.Get(0).(user.Core)
 	}
 
-	return r0
+	var r1 error
+	if rf, ok := ret.Get(1).(func(interface{}, user.Core) error); ok {
+		r1 = rf(token, approvement)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 type mockConstructorTestingTNewUserService interface {

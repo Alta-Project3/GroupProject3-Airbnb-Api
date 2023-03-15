@@ -55,13 +55,34 @@ func (_m *ReservationServiceInterface) Create(reservationEntity reservations.Res
 	return r0, r1
 }
 
-// GetByRoomAndDateRange provides a mock function with given fields:
-func (_m *ReservationServiceInterface) GetByRoomAndDateRange() ([]reservations.ReservationEntity, error) {
-	ret := _m.Called()
+// GetById provides a mock function with given fields: id
+func (_m *ReservationServiceInterface) GetById(id uint) (reservations.ReservationEntity, error) {
+	ret := _m.Called(id)
+
+	var r0 reservations.ReservationEntity
+	if rf, ok := ret.Get(0).(func(uint) reservations.ReservationEntity); ok {
+		r0 = rf(id)
+	} else {
+		r0 = ret.Get(0).(reservations.ReservationEntity)
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetReservation provides a mock function with given fields: userId
+func (_m *ReservationServiceInterface) GetReservation(userId uint) ([]reservations.ReservationEntity, error) {
+	ret := _m.Called(userId)
 
 	var r0 []reservations.ReservationEntity
-	if rf, ok := ret.Get(0).(func() []reservations.ReservationEntity); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(uint) []reservations.ReservationEntity); ok {
+		r0 = rf(userId)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]reservations.ReservationEntity)
@@ -69,8 +90,29 @@ func (_m *ReservationServiceInterface) GetByRoomAndDateRange() ([]reservations.R
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func() error); ok {
-		r1 = rf()
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(userId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// Update provides a mock function with given fields: reservationEntity, id
+func (_m *ReservationServiceInterface) Update(reservationEntity reservations.ReservationEntity, id uint) (reservations.ReservationEntity, error) {
+	ret := _m.Called(reservationEntity, id)
+
+	var r0 reservations.ReservationEntity
+	if rf, ok := ret.Get(0).(func(reservations.ReservationEntity, uint) reservations.ReservationEntity); ok {
+		r0 = rf(reservationEntity, id)
+	} else {
+		r0 = ret.Get(0).(reservations.ReservationEntity)
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(reservations.ReservationEntity, uint) error); ok {
+		r1 = rf(reservationEntity, id)
 	} else {
 		r1 = ret.Error(1)
 	}
