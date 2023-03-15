@@ -9,7 +9,7 @@ type FeedbackResponse struct {
 	Feedback string  `json:"feedback,omitempty"`
 }
 
-func ToResponse(data feedback.Core) FeedbackResponse {
+func ToFeedbackResponse(data feedback.Core) FeedbackResponse {
 	return FeedbackResponse{
 		ID:       data.ID,
 		RoomID:   data.RoomID,

@@ -34,7 +34,7 @@ func (fc *feedbackControll) Create() echo.HandlerFunc {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "server problem"})
 		}
 		return c.JSON(http.StatusCreated, map[string]interface{}{
-			"data":    res,
+			"data":    ToFeedbackResponse(res),
 			"message": "success add feedback",
 		})
 
