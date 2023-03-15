@@ -4,6 +4,7 @@ import (
 	config "groupproject3-airbnb-api/app/config"
 	database "groupproject3-airbnb-api/app/database"
 	router "groupproject3-airbnb-api/app/router"
+	"groupproject3-airbnb-api/helper"
 	"log"
 
 	"github.com/labstack/echo/v4"
@@ -13,7 +14,7 @@ import (
 func main() {
 	cfg := config.InitConfig()
 	db := database.InitDB(*cfg)
-
+	helper.ServerKey = cfg.SERVER_KEY_MIDTRANS
 	database.Migrate(db)
 
 	e := echo.New()

@@ -17,15 +17,16 @@ var (
 )
 
 type DBConfig struct {
-	DBUser            string
-	DBPass            string
-	DBHost            string
-	DBPort            int
-	DBName            string
-	jwtKey            string
-	AWS_REGION        string
-	ACCESS_KEY_ID     string
-	ACCESS_KEY_SECRET string
+	DBUser              string
+	DBPass              string
+	DBHost              string
+	DBPort              int
+	DBName              string
+	jwtKey              string
+	AWS_REGION          string
+	ACCESS_KEY_ID       string
+	ACCESS_KEY_SECRET   string
+	SERVER_KEY_MIDTRANS string
 }
 
 // membuat fungsi global untuk pemanggilan config
@@ -73,6 +74,11 @@ func ReadEnv() *DBConfig {
 		isRead = false
 	}
 	if val, found := os.LookupEnv("ACCESS_KEY_SECRET"); found {
+		app.ACCESS_KEY_SECRET = val
+		isRead = false
+	}
+
+	if val, found := os.LookupEnv("SERVER_KEY_MIDTRANS"); found {
 		app.ACCESS_KEY_SECRET = val
 		isRead = false
 	}
