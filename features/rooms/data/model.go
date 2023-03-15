@@ -14,6 +14,7 @@ type Room struct {
 	UserId      uint
 	User        *data.User `gorm:"foreignKey:UserId"`
 	RoomName    string
+	RoomPicture string
 	Price       int
 	Description string
 	Latitude    float64
@@ -25,6 +26,7 @@ func RoomEntityToRoom(roomEntity rooms.RoomEntity) Room {
 	result := Room{
 		UserId:      roomEntity.UserId,
 		RoomName:    roomEntity.RoomName,
+		RoomPicture: roomEntity.RoomPicture,
 		Price:       roomEntity.Price,
 		Description: roomEntity.Description,
 		Latitude:    roomEntity.Latitude,
@@ -40,6 +42,7 @@ func RoomToRoomEntity(room Room) rooms.RoomEntity {
 		Id:          room.ID,
 		UserId:      room.UserId,
 		RoomName:    room.RoomName,
+		RoomPicture: room.RoomPicture,
 		Price:       room.Price,
 		Description: room.Description,
 		Latitude:    room.Latitude,

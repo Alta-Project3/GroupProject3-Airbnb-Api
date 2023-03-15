@@ -1,6 +1,9 @@
 package handler
 
-import "groupproject3-airbnb-api/features/rooms"
+import (
+	"groupproject3-airbnb-api/features/rooms"
+	"mime/multipart"
+)
 
 type RoomRequest struct {
 	UserId      uint    `json:"user_id" form:"user_id"`
@@ -10,6 +13,7 @@ type RoomRequest struct {
 	Latitude    float64 `json:"latitude" form:"latitude"`
 	Longitude   float64 `json:"longitude" form:"longitude"`
 	Address     string  `json:"addresss" form:"address"`
+	FileHeader  multipart.FileHeader
 }
 
 func RoomRequestToRoomEntity(roomRequest *RoomRequest) rooms.RoomEntity {
