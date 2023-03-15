@@ -20,7 +20,12 @@ func New(db *gorm.DB) rooms.RoomDataInterface {
 
 func (q *query) SelectAll() ([]rooms.RoomEntity, error) {
 	var rooms []Room
-	if err := q.db.Preload("User").Find(&rooms); err.Error != nil {
+	err := q.db.Preload("User").
+		Select("rooms.*, CASE WHEN avg(feedbacks.rating) IS NULL THEN 0 ELSE avg(feedbacks.rating) END AS rating").
+		Joins("left join feedbacks ON feedbacks.room_id = rooms.id").
+		Group("rooms.id").
+		Find(&rooms)
+	if err.Error != nil {
 		return nil, err.Error
 	}
 	return ListRoomToRoomEntity(rooms), nil

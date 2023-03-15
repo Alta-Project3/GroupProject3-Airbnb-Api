@@ -16,6 +16,7 @@ type RoomEntity struct {
 	Latitude    float64 `validate:"required"`
 	Longitude   float64 `validate:"required"`
 	Address     string  `validate:"required"`
+	Rating      int
 }
 
 type RoomServiceInterface interface {
