@@ -33,12 +33,12 @@ type FeedbackService interface {
 	Create(token interface{}, roomID uint, newFeedback Core) (Core, error)
 	GetUserFeedback(token interface{}) ([]Core, error)
 	GetByID(token interface{}, feedbackID uint) (Core, error)
-	Update(token interface{}, feedbackID uint) (Core, error)
+	Update(token interface{}, feedbackID uint, updatedFeedback Core) (Core, error)
 }
 
 type FeedbackData interface {
 	Create(userID uint, roomID uint, newFeedback Core) (Core, error)
 	GetUserFeedback(userID uint) ([]Core, error)
 	GetByID(userID uint, feedbackID uint) (Core, error)
-	Update(userID uint, feedBackID uint) (Core, error)
+	Update(userID uint, feedBackID uint, updatedFeedback Core) (Core, error)
 }

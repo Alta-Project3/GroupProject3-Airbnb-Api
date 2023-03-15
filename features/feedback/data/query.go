@@ -84,7 +84,20 @@ func (fq *feedbackQuery) GetByID(userID uint, feedbackID uint) (feedback.Core, e
 	return result, nil
 }
 
-// Update implements feedback.FeedbackData
-func (*feedbackQuery) Update(userID uint, feedBackID uint) (feedback.Core, error) {
-	panic("unimplemented")
+func (fq *feedbackQuery) Update(userID uint, feedBackID uint, updatedFeedback feedback.Core) (feedback.Core, error) {
+	cnv := CoreToData(updatedFeedback)
+	cnv.ID = uint(feedBackID)
+
+	qry := fq.db.Where("id = ?", feedBackID).Updates(&cnv)
+	affrows := qry.RowsAffected
+	if affrows == 0 {
+		log.Println("no rows affected")
+		return feedback.Core{}, errors.New("no data updated")
+	}
+	err := qry.Error
+	if err != nil {
+		log.Println("update feedback query error", err.Error())
+		return feedback.Core{}, errors.New("user not found")
+	}
+	return updatedFeedback, nil
 }
