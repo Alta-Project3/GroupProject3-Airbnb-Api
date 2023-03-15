@@ -59,7 +59,6 @@ func (fc *feedbackControll) GetUserFeedback() echo.HandlerFunc {
 	}
 }
 
-// GetByID implements feedback.FeedbackHandler
 func (fc *feedbackControll) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token := c.Get("user")

@@ -63,8 +63,6 @@ func (fq *feedbackQuery) GetUserFeedback(userID uint) ([]feedback.Core, error) {
 			log.Println("query error", err.Error())
 			return []feedback.Core{}, errors.New("server error")
 		}
-		result[i].Rating = room.Rating
-		result[i].Feedback = room.Feedback
 	}
 	return result, nil
 
@@ -78,7 +76,7 @@ func (fq *feedbackQuery) GetByID(userID uint, feedbackID uint) (feedback.Core, e
 	}
 	result := DataToCore(res)
 	user := User{}
-	if err := fq.db.Where("id = ?", result.UserID).First(&user).Error; err != nil {
+	if err := fq.db.Where("id = ?", res.UserID).First(&user).Error; err != nil {
 		log.Println("get user by id query error : ", err.Error())
 		return feedback.Core{}, errors.New("get user by id error")
 	}
