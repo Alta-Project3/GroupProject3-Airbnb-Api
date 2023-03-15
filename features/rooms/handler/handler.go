@@ -39,10 +39,12 @@ func (h *RoomHandler) GetById(c echo.Context) error {
 }
 
 func (h *RoomHandler) GetByUserId(c echo.Context) error {
-	user_id, _ := strconv.Atoi(c.Param("id"))
-	classEntity, err := h.Service.GetByUserId(uint(user_id))
+	userIdToken := helper.ClaimToken(c.Get("user"))
+	userId, _ := strconv.Atoi(c.Param("id"))
+
+	classEntity, err := h.Service.GetByUserId(uint(userId), uint(userIdToken))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helper.ResponseFail("error read data"))
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFail(err.Error()))
 	}
 	listClassResponse := ListRoomEntityToRoomResponse(classEntity)
 	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", listClassResponse))

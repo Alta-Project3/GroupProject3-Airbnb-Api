@@ -27,8 +27,11 @@ func (s *roomService) GetById(id uint) (rooms.RoomEntity, error) {
 	return s.Data.SelectById(id)
 }
 
-func (s *roomService) GetByUserId(user_id uint) ([]rooms.RoomEntity, error) {
-	return s.Data.SelectByUserId(user_id)
+func (s *roomService) GetByUserId(userId, userIdLogin uint) ([]rooms.RoomEntity, error) {
+	if userId != userIdLogin {
+		return nil, errors.New("not allowed to access this user id")
+	}
+	return s.Data.SelectByUserId(userId)
 }
 
 func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint) (rooms.RoomEntity, error) {
@@ -39,6 +42,7 @@ func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint) (rooms.Ro
 		return rooms.RoomEntity{}, errValidate
 	}
 
+	roomEntity.UserId = userId
 	room_id, err := s.Data.Store(roomEntity, userId)
 	if err != nil {
 		return rooms.RoomEntity{}, err

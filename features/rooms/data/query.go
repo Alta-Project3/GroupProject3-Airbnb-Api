@@ -34,12 +34,12 @@ func (q *query) SelectById(id uint) (rooms.RoomEntity, error) {
 	return RoomToRoomEntity(room), nil
 }
 
-func (q *query) SelectByUserId(user_id uint) ([]rooms.RoomEntity, error) {
+func (q *query) SelectByUserId(userId uint) ([]rooms.RoomEntity, error) {
 	var room []Room
 	err := q.db.Preload("User").
 		Select("rooms.*").
-		Where("user_id", user_id).InnerJoins("User").
-		First(&room)
+		Where("user_id", userId).InnerJoins("User").
+		Find(&room)
 
 	if err.Error != nil {
 		return nil, err.Error

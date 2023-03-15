@@ -4,7 +4,7 @@ import "groupproject3-airbnb-api/features/user"
 
 type RoomEntity struct {
 	Id          uint
-	UserId      uint `validate:"required"`
+	UserId      uint
 	User        user.Core
 	RoomName    string  `validate:"required"`
 	Price       int     `validate:"required"`
@@ -16,7 +16,7 @@ type RoomEntity struct {
 type RoomServiceInterface interface {
 	GetAll() ([]RoomEntity, error)
 	GetById(id uint) (RoomEntity, error)
-	GetByUserId(id uint) ([]RoomEntity, error)
+	GetByUserId(userId, userIdLogin uint) ([]RoomEntity, error)
 	Create(roomEntity RoomEntity, userId uint) (RoomEntity, error)
 	Update(roomEntity RoomEntity, id, userId uint) (RoomEntity, error)
 	Delete(id, userId uint) error
