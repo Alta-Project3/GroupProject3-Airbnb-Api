@@ -9,28 +9,30 @@ type ReservationEntity struct {
 	Id                uint
 	UserId            uint
 	User              user.Core
-	RoomId            uint
+	RoomId            uint `validate:"required"`
 	Room              rooms.RoomEntity
-	DateStart         string
-	DateEnd           string
+	DateStart         string `validate:"required"`
+	DateEnd           string `validate:"required"`
 	Duration          int
 	TotalPrice        int
-	CardName          string
-	CardNumber        string
-	CardCvv           string
-	CardMonth         string
-	CardYear          string
 	StatusReservation string
+	PaymentLink       string
 }
 
 type ReservationServiceInterface interface {
 	GetReservation(userId uint) ([]ReservationEntity, error)
 	CheckAvailability(reservationEntity ReservationEntity) (bool, error)
 	Create(reservationEntity ReservationEntity) (ReservationEntity, error)
+
+	GetById(id uint) (ReservationEntity, error)
+	Update(reservationEntity ReservationEntity, id uint) (ReservationEntity, error)
 }
 
 type ReservationDataInterface interface {
 	SelectyReservation(userId uint) ([]ReservationEntity, error)
 	SelectyRoomAndDateRange(reservationEntity ReservationEntity) ([]ReservationEntity, error)
 	Store(reservationEntity ReservationEntity) (uint, error)
+
+	SelectById(id uint) (ReservationEntity, error)
+	Edit(reservationEntity ReservationEntity, id uint) error
 }

@@ -15,6 +15,21 @@ func New(db *gorm.DB) reservations.ReservationDataInterface {
 		db: db,
 	}
 }
+func (q *query) SelectById(id uint) (reservations.ReservationEntity, error) {
+	var reservation Reservation
+	if err := q.db.Preload("User").Preload("Room").First(&reservation, id); err.Error != nil {
+		return reservations.ReservationEntity{}, err.Error
+	}
+	return ReservationToReservationEntity(reservation), nil
+}
+
+func (q *query) Edit(reservationEntity reservations.ReservationEntity, id uint) error {
+	class := ReservationEntityToReservation(reservationEntity)
+	if err := q.db.Where("id", id).Updates(&class); err.Error != nil {
+		return err.Error
+	}
+	return nil
+}
 
 func (q *query) SelectyReservation(userId uint) ([]reservations.ReservationEntity, error) {
 	var reservations []Reservation

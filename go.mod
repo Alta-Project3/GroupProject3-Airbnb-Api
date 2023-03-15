@@ -9,6 +9,8 @@ require (
 	gorm.io/gorm v1.24.6
 )
 
+require github.com/Findryankp/snapMidtransGo v1.0.0 // indirect
+
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect

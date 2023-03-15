@@ -8,36 +8,30 @@ import (
 )
 
 type ReservationResponse struct {
-	Id         uint              `json:"id"`
-	UserId     uint              `json:"user_id"`
-	RoomId     uint              `json:"room_id"`
-	DateStart  string            `json:"date_start"`
-	DateEnd    string            `json:"date_end"`
-	Duration   int               `json:"duration"`
-	TotalPrice int               `json:"total_price"`
-	CardName   string            `json:"card_name"`
-	CardNumber string            `json:"card_number"`
-	CardCvv    string            `json:"card_cvv"`
-	CardMonth  string            `json:"card_month"`
-	CardYear   string            `json:"card_yaer"`
-	User       user.UserResponse `json:"user,omitempty"`
-	Room       room.RoomResponse `json:"room,omitempty"`
+	Id                uint              `json:"id"`
+	UserId            uint              `json:"user_id"`
+	RoomId            uint              `json:"room_id"`
+	DateStart         string            `json:"date_start"`
+	DateEnd           string            `json:"date_end"`
+	Duration          int               `json:"duration"`
+	TotalPrice        int               `json:"total_price"`
+	StatusReservation string            `json:"status_reservation"`
+	PaymentLink       string            `json:"payment_link"`
+	User              user.UserResponse `json:"user,omitempty"`
+	Room              room.RoomResponse `json:"room,omitempty"`
 }
 
 func ReservationEntityToReservationResponse(reservationEntity reservations.ReservationEntity) ReservationResponse {
 	result := ReservationResponse{
-		Id:         reservationEntity.Id,
-		UserId:     reservationEntity.UserId,
-		RoomId:     reservationEntity.RoomId,
-		DateStart:  reservationEntity.DateStart,
-		DateEnd:    reservationEntity.DateEnd,
-		Duration:   reservationEntity.Duration,
-		TotalPrice: reservationEntity.TotalPrice,
-		CardName:   reservationEntity.CardName,
-		CardNumber: reservationEntity.CardNumber,
-		CardCvv:    reservationEntity.CardCvv,
-		CardMonth:  reservationEntity.CardMonth,
-		CardYear:   reservationEntity.CardYear,
+		Id:                reservationEntity.Id,
+		UserId:            reservationEntity.UserId,
+		RoomId:            reservationEntity.RoomId,
+		DateStart:         reservationEntity.DateStart,
+		DateEnd:           reservationEntity.DateEnd,
+		Duration:          reservationEntity.Duration,
+		TotalPrice:        reservationEntity.TotalPrice,
+		StatusReservation: reservationEntity.StatusReservation,
+		PaymentLink:       reservationEntity.PaymentLink,
 	}
 
 	if !reflect.ValueOf(reservationEntity.User).IsZero() {

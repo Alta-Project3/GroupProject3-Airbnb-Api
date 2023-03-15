@@ -21,12 +21,8 @@ type Reservation struct {
 	DateEnd           string
 	Duration          int
 	TotalPrice        int
-	CardName          string
-	CardNumber        string
-	CardCvv           string
-	CardMonth         string
-	CardYear          string
 	StatusReservation string
+	PaymentLink       string
 }
 
 func ReservationEntityToReservation(reservationEntity reservations.ReservationEntity) Reservation {
@@ -37,11 +33,6 @@ func ReservationEntityToReservation(reservationEntity reservations.ReservationEn
 		DateEnd:           reservationEntity.DateEnd,
 		Duration:          reservationEntity.Duration,
 		TotalPrice:        reservationEntity.TotalPrice,
-		CardName:          reservationEntity.CardName,
-		CardNumber:        reservationEntity.CardNumber,
-		CardCvv:           reservationEntity.CardCvv,
-		CardMonth:         reservationEntity.CardMonth,
-		CardYear:          reservationEntity.CardYear,
 		StatusReservation: reservationEntity.StatusReservation,
 	}
 }
@@ -55,11 +46,6 @@ func ReservationToReservationEntity(reservation Reservation) reservations.Reserv
 		DateEnd:           reservation.DateEnd,
 		Duration:          reservation.Duration,
 		TotalPrice:        reservation.TotalPrice,
-		CardName:          reservation.CardName,
-		CardNumber:        reservation.CardNumber,
-		CardCvv:           reservation.CardCvv,
-		CardMonth:         reservation.CardMonth,
-		CardYear:          reservation.CardYear,
 		StatusReservation: reservation.StatusReservation,
 	}
 

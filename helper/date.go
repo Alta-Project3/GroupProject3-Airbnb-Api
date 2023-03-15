@@ -1,6 +1,8 @@
 package helper
 
-import "time"
+import (
+	"time"
+)
 
 func IsDate(dateString string) (string, bool) {
 	layout := "2006-01-02"
@@ -30,4 +32,15 @@ func FormatDate(dateString string) time.Time {
 	}
 
 	return date
+}
+
+func CountRangeDate(stringDate1, stringDate2 string) int {
+	layout := "2006-01-02"
+	date1, _ := time.Parse(layout, stringDate1)
+	date2, _ := time.Parse(layout, stringDate2)
+
+	diff := date2.Sub(date1)
+	days := int(diff.Hours() / 24)
+
+	return days
 }

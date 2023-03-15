@@ -20,6 +20,22 @@ func New(data reservations.ReservationDataInterface) reservations.ReservationSer
 	}
 }
 
+func (s *ReservationService) GetById(id uint) (reservations.ReservationEntity, error) {
+	return s.Data.SelectById(id)
+}
+
+func (s *ReservationService) Update(reservationEntity reservations.ReservationEntity, id uint) (reservations.ReservationEntity, error) {
+	if checkDataExist, err := s.Data.SelectById(id); err != nil {
+		return checkDataExist, err
+	}
+
+	err := s.Data.Edit(reservationEntity, id)
+	if err != nil {
+		return reservations.ReservationEntity{}, err
+	}
+	return s.Data.SelectById(id)
+}
+
 func (s *ReservationService) CheckAvailability(reservationEntity reservations.ReservationEntity) (bool, error) {
 	s.validate = validator.New()
 	errValidate := s.validate.StructExcept(reservationEntity, "User", "Room")
@@ -53,25 +69,65 @@ func (s *ReservationService) CheckAvailability(reservationEntity reservations.Re
 	return true, nil
 }
 
-// Create implements reservations.ReservationServiceInterface
-func (*ReservationService) Create(reservationEntity reservations.ReservationEntity) (reservations.ReservationEntity, error) {
-	// dateStart, checkDateStart := helper.IsDate(reservationEntity.DateStart)
-	// if !checkDateStart {
-	// 	return false, errors.New("not valid date start format date, ex : 2006-02-25")
-	// }
+func (s *ReservationService) Create(reservationEntity reservations.ReservationEntity) (reservations.ReservationEntity, error) {
+	s.validate = validator.New()
+	errValidate := s.validate.StructExcept(reservationEntity, "User", "Room")
+	if errValidate != nil {
+		return reservations.ReservationEntity{}, errValidate
+	}
 
-	// dateEnd, checkDateEnd := helper.IsDate(reservationEntity.DateEnd)
-	// if !checkDateEnd {
-	// 	return false, errors.New("not valid date graduate format date, ex : 2006-02-25")
-	// }
+	dateStart, checkDateStart := helper.IsDate(reservationEntity.DateStart)
+	if !checkDateStart {
+		return reservations.ReservationEntity{}, errors.New("not valid date start format date, ex : 2006-02-25")
+	}
 
-	// if helper.FormatDate(dateEnd).Before(helper.FormatDate(dateStart)) {
-	// 	return false, errors.New("error range of date, date end must be after date start")
-	// }
-	panic("unimplemented")
+	dateEnd, checkDateEnd := helper.IsDate(reservationEntity.DateEnd)
+	if !checkDateEnd {
+		return reservations.ReservationEntity{}, errors.New("not valid date graduate format date, ex : 2006-02-25")
+	}
+
+	if helper.FormatDate(dateEnd).Before(helper.FormatDate(dateStart)) {
+		return reservations.ReservationEntity{}, errors.New("error range of date, date end must be after date start")
+	}
+
+	reservationId, err := s.Data.Store(reservationEntity)
+	if err != nil {
+		return reservations.ReservationEntity{}, err
+	}
+
+	duration := helper.CountRangeDate(dateStart, dateEnd)
+	totalPrice := reservationEntity.TotalPrice
+	//getUserData
+	reservationData, _ := s.Data.SelectById(reservationId)
+
+	//call midtrans
+	postData := map[string]any{
+		"order_id":   reservationId,
+		"nominal":    totalPrice,
+		"first_name": reservationData.User.Name,
+		"last_name":  reservationData.User.Name,
+		"email":      reservationData.User.Name,
+		"phone":      "000",
+	}
+
+	paymentLink, err1 := helper.PostMidtrans(postData)
+	if err1 != nil {
+		return reservations.ReservationEntity{}, err
+	} else {
+		//midtrans
+		update := reservations.ReservationEntity{
+			Duration:          duration,
+			TotalPrice:        totalPrice,
+			StatusReservation: "pending",
+			PaymentLink:       paymentLink,
+		}
+		//if ok
+		s.Data.Edit(update, reservationId)
+	}
+
+	return s.Data.SelectById(reservationId)
 }
 
-// GetByRoomAndDateRange implements reservations.ReservationServiceInterface
 func (s *ReservationService) GetReservation(userId uint) ([]reservations.ReservationEntity, error) {
 	return s.Data.SelectyReservation(uint(userId))
 }
