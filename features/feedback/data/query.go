@@ -70,9 +70,20 @@ func (fq *feedbackQuery) GetUserFeedback(userID uint) ([]feedback.Core, error) {
 
 }
 
-// GetByID implements feedback.FeedbackData
-func (*feedbackQuery) GetByID(userID uint, feedbackID uint) (feedback.Core, error) {
-	panic("unimplemented")
+func (fq *feedbackQuery) GetByID(userID uint, feedbackID uint) (feedback.Core, error) {
+	res := Feedback{}
+	if err := fq.db.Where("id = ?", feedbackID).First(&res).Error; err != nil {
+		log.Println("get feedback detail query error : ", err.Error())
+		return feedback.Core{}, errors.New("get feedback detail query error")
+	}
+	result := DataToCore(res)
+	user := User{}
+	if err := fq.db.Where("id = ?", result.UserID).First(&user).Error; err != nil {
+		log.Println("get user by id query error : ", err.Error())
+		return feedback.Core{}, errors.New("get user by id error")
+	}
+
+	return result, nil
 }
 
 // Update implements feedback.FeedbackData
