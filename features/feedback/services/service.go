@@ -5,6 +5,7 @@ import (
 	"groupproject3-airbnb-api/features/feedback"
 	"groupproject3-airbnb-api/helper"
 	"log"
+	"strings"
 )
 
 type feedbackUseCase struct {
@@ -17,19 +18,24 @@ func New(fd feedback.FeedbackData) feedback.FeedbackService {
 	}
 }
 
-func (fuc *feedbackUseCase) Create(token interface{}, newFeedback feedback.Core) (feedback.Core, error) {
+func (fuc *feedbackUseCase) Create(token interface{}, roomID uint, newFeedback feedback.Core) (feedback.Core, error) {
 	userID := helper.ExtractToken(token)
 
 	if userID <= 0 {
 		return feedback.Core{}, errors.New("user not found")
 	}
-	res, err := fuc.qry.Create(uint(userID), newFeedback)
+	res, err := fuc.qry.Create(uint(userID), roomID, newFeedback)
 
 	if err != nil {
-		log.Println("cannot post book", err.Error())
-		return feedback.Core{}, errors.New("server error")
+		msg := ""
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data not found"
+		} else {
+			msg = "server problem"
+		}
+		log.Println("error add query in service: ", err.Error())
+		return feedback.Core{}, errors.New(msg)
 	}
-
 	return res, nil
 }
 

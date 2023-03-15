@@ -1,7 +1,9 @@
 package data
 
 import (
+	"errors"
 	"groupproject3-airbnb-api/features/feedback"
+	"log"
 
 	"gorm.io/gorm"
 )
@@ -16,19 +18,25 @@ func New(db *gorm.DB) feedback.FeedbackData {
 	}
 }
 
-func (fq *feedbackQuery) Create(userID uint, newFeedback feedback.Core) (feedback.Core, error) {
-	cnv := CoreToData(newFeedback)
-	cnv.UserID = uint(userID)
-	err := fq.db.Create(&cnv).Error
+func (fq *feedbackQuery) Create(userID uint, roomID uint, newFeedback feedback.Core) (feedback.Core, error) {
+	room := Room{}
 
+	err := fq.db.Where("id=?", roomID).First(&room).Error
 	if err != nil {
-		return feedback.Core{}, err
+		log.Println("query error", err.Error())
+		return feedback.Core{}, errors.New("server error")
 	}
 
-	newFeedback.ID = cnv.ID
-	newFeedback.UserID = cnv.UserID
-
-	return newFeedback, nil
+	cnv := CoreToData(newFeedback)
+	cnv.RoomID = room.ID
+	cnv.UserID = userID
+	err = fq.db.Create(&cnv).Error
+	if err != nil {
+		log.Println("query error", err.Error())
+		return feedback.Core{}, errors.New("server error")
+	}
+	result := DataToCore(cnv)
+	return result, nil
 }
 
 // GetAll implements feedback.FeedbackData
