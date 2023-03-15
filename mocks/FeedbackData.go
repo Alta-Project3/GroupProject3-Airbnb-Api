@@ -78,20 +78,20 @@ func (_m *FeedbackData) GetUserFeedback(userID uint) ([]feedback.Core, error) {
 	return r0, r1
 }
 
-// Update provides a mock function with given fields: userID, feedBackID
-func (_m *FeedbackData) Update(userID uint, feedBackID uint) (feedback.Core, error) {
-	ret := _m.Called(userID, feedBackID)
+// Update provides a mock function with given fields: userID, feedBackID, updatedFeedback
+func (_m *FeedbackData) Update(userID uint, feedBackID uint, updatedFeedback feedback.Core) (feedback.Core, error) {
+	ret := _m.Called(userID, feedBackID, updatedFeedback)
 
 	var r0 feedback.Core
-	if rf, ok := ret.Get(0).(func(uint, uint) feedback.Core); ok {
-		r0 = rf(userID, feedBackID)
+	if rf, ok := ret.Get(0).(func(uint, uint, feedback.Core) feedback.Core); ok {
+		r0 = rf(userID, feedBackID, updatedFeedback)
 	} else {
 		r0 = ret.Get(0).(feedback.Core)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(uint, uint) error); ok {
-		r1 = rf(userID, feedBackID)
+	if rf, ok := ret.Get(1).(func(uint, uint, feedback.Core) error); ok {
+		r1 = rf(userID, feedBackID, updatedFeedback)
 	} else {
 		r1 = ret.Error(1)
 	}

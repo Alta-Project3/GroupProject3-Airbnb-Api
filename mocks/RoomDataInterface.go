@@ -108,20 +108,20 @@ func (_m *RoomDataInterface) SelectByUserId(user_id uint) ([]rooms.RoomEntity, e
 	return r0, r1
 }
 
-// Store provides a mock function with given fields: roomEntity
-func (_m *RoomDataInterface) Store(roomEntity rooms.RoomEntity) (uint, error) {
-	ret := _m.Called(roomEntity)
+// Store provides a mock function with given fields: roomEntity, userId
+func (_m *RoomDataInterface) Store(roomEntity rooms.RoomEntity, userId uint) (uint, error) {
+	ret := _m.Called(roomEntity, userId)
 
 	var r0 uint
-	if rf, ok := ret.Get(0).(func(rooms.RoomEntity) uint); ok {
-		r0 = rf(roomEntity)
+	if rf, ok := ret.Get(0).(func(rooms.RoomEntity, uint) uint); ok {
+		r0 = rf(roomEntity, userId)
 	} else {
 		r0 = ret.Get(0).(uint)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(rooms.RoomEntity) error); ok {
-		r1 = rf(roomEntity)
+	if rf, ok := ret.Get(1).(func(rooms.RoomEntity, uint) error); ok {
+		r1 = rf(roomEntity, userId)
 	} else {
 		r1 = ret.Error(1)
 	}
