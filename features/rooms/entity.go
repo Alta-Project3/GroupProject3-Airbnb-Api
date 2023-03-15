@@ -1,12 +1,16 @@
 package rooms
 
-import "groupproject3-airbnb-api/features/user"
+import (
+	"groupproject3-airbnb-api/features/user"
+	"mime/multipart"
+)
 
 type RoomEntity struct {
 	Id          uint
 	UserId      uint
 	User        user.Core
 	RoomName    string  `validate:"required"`
+	RoomPicture string  `json:"room_picture"`
 	Price       int     `validate:"required"`
 	Description string  `validate:"required"`
 	Latitude    float64 `validate:"required"`
@@ -18,7 +22,7 @@ type RoomServiceInterface interface {
 	GetAll() ([]RoomEntity, error)
 	GetById(id uint) (RoomEntity, error)
 	GetByUserId(userId, userIdLogin uint) ([]RoomEntity, error)
-	Create(roomEntity RoomEntity, userId uint) (RoomEntity, error)
+	Create(roomEntity RoomEntity, userId uint, fileData multipart.FileHeader) (RoomEntity, error)
 	Update(roomEntity RoomEntity, id, userId uint) (RoomEntity, error)
 	Delete(id, userId uint) error
 }

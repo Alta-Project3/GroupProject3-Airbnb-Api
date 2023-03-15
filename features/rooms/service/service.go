@@ -3,6 +3,8 @@ package service
 import (
 	"errors"
 	"groupproject3-airbnb-api/features/rooms"
+	"groupproject3-airbnb-api/helper"
+	"mime/multipart"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -34,7 +36,7 @@ func (s *roomService) GetByUserId(userId, userIdLogin uint) ([]rooms.RoomEntity,
 	return s.Data.SelectByUserId(userId)
 }
 
-func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint) (rooms.RoomEntity, error) {
+func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint, fileData multipart.FileHeader) (rooms.RoomEntity, error) {
 	//cek if user not host
 	s.validate = validator.New()
 	errValidate := s.validate.StructExcept(roomEntity, "User")
@@ -43,6 +45,11 @@ func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint) (rooms.Ro
 	}
 
 	roomEntity.UserId = userId
+	url, err := helper.GetUrlImagesFromAWS(fileData)
+	if err != nil {
+		return rooms.RoomEntity{}, errors.New("validate: " + err.Error())
+	}
+	roomEntity.RoomPicture = url
 	room_id, err := s.Data.Store(roomEntity, userId)
 	if err != nil {
 		return rooms.RoomEntity{}, err
