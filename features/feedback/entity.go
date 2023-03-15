@@ -2,35 +2,37 @@ package feedback
 
 import (
 	"groupproject3-airbnb-api/features/user"
-	"time"
+
+	"github.com/labstack/echo/v4"
 )
 
-type FeedbackEntity struct {
-	Id            uint
+type Core struct {
+	ID            uint
 	UserId        uint `validate:"required"`
 	User          user.Core
-	ReservationId uint    `validate:"required"`
-	RoomId        uint    `validate:"required"`
+	ReservationID uint    `validate:"required"`
+	RoomID        uint    `validate:"required"`
 	Rating        float64 `validate:"required"`
 	Feedback      string  `validate:"required"`
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
 }
 
-type FeedbackServiceInterface interface {
-	GetAll() ([]FeedbackEntity, error)
-	GetById(id uint) (FeedbackEntity, error)
-	GetByRoomId(roomId uint) ([]FeedbackEntity, error)
-	Create(feedbackEntity FeedbackEntity) (FeedbackEntity, error)
-	Update(feedbackEntity FeedbackEntity, id uint) (FeedbackEntity, error)
-	Delete(id uint) error
+type FeedbackHandler interface {
+	Create() echo.HandlerFunc
+	GetAll() echo.HandlerFunc
+	GetByID() echo.HandlerFunc
+	Update() echo.HandlerFunc
 }
 
-type FeedbackDataInterface interface {
-	SelectAll() ([]FeedbackEntity, error)
-	SelectById(id uint) (FeedbackEntity, error)
-	SelectByRoomId(id uint) (FeedbackEntity, error)
-	Store(feedbackEntity FeedbackEntity) (uint, error)
-	Edit(feedbackEntity FeedbackEntity, id uint) error
-	Destroy(id uint) error
+type FeedbackService interface {
+	Create(token interface{}, newFeedback Core) (Core, error)
+	GetAll() ([]Core, error)
+	GetByID(token interface{}, feedbackID uint) (Core, error)
+	Update(token interface{}, feedbackID uint) (Core, error)
+}
+
+type FeedbackData interface {
+	Create(userID uint, newFeedback Core) (Core, error)
+	GetAll() ([]Core, error)
+	GetByID(userID uint, feedbackID uint) (Core, error)
+	Update(userID uint, feedBackID uint) (Core, error)
 }
