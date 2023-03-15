@@ -24,7 +24,7 @@ type User struct {
 
 type FeedbackHandler interface {
 	Create() echo.HandlerFunc
-	GetAll() echo.HandlerFunc
+	GetUserFeedback() echo.HandlerFunc
 	GetByID() echo.HandlerFunc
 	Update() echo.HandlerFunc
 }

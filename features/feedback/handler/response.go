@@ -17,3 +17,11 @@ func ToFeedbackResponse(data feedback.Core) FeedbackResponse {
 		Feedback: data.Feedback,
 	}
 }
+
+func GetFeedbackResp(data []feedback.Core) []FeedbackResponse {
+	res := []FeedbackResponse{}
+	for _, v := range data {
+		res = append(res, ToFeedbackResponse(v))
+	}
+	return res
+}

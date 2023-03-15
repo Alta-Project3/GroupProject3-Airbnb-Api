@@ -42,8 +42,18 @@ func (fc *feedbackControll) Create() echo.HandlerFunc {
 }
 
 // GetAll implements feedback.FeedbackHandler
-func (*feedbackControll) GetAll() echo.HandlerFunc {
-	panic("unimplemented")
+func (fc *feedbackControll) GetUserFeedback() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Get("user")
+		res, err := fc.srv.GetUserFeedback(token)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "internal server error"})
+		}
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    GetFeedbackResp(res),
+			"message": "success show user feedback",
+		})
+	}
 }
 
 // GetByID implements feedback.FeedbackHandler
