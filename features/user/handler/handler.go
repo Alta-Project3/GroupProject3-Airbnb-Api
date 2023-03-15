@@ -168,7 +168,7 @@ func (uc *userControll) UpgradeHost() echo.HandlerFunc {
 			input.Role = "User"
 		}
 
-		err = uc.srv.UpgradeHost(c.Get("user"), *ReqToCore(input))
+		res, err := uc.srv.UpgradeHost(c.Get("user"), *ReqToCore(input))
 
 		if err != nil {
 			if strings.Contains(err.Error(), "password") {
@@ -178,6 +178,7 @@ func (uc *userControll) UpgradeHost() echo.HandlerFunc {
 			}
 		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
+			"data":    ToApproveResponse(res),
 			"message": "success upgrade user to host",
 		})
 	}

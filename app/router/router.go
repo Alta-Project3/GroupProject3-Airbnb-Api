@@ -9,4 +9,5 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	userRouter(db, e)
 	roomRouter(db, e)
 	reservationRouter(db, e)
+	feedbackRouter(db, e)
 }
