@@ -55,6 +55,29 @@ func (_m *FeedbackService) GetByID(token interface{}, feedbackID uint) (feedback
 	return r0, r1
 }
 
+// GetFeedbackByRoomId provides a mock function with given fields: roomId
+func (_m *FeedbackService) GetFeedbackByRoomId(roomId uint) ([]feedback.Core, error) {
+	ret := _m.Called(roomId)
+
+	var r0 []feedback.Core
+	if rf, ok := ret.Get(0).(func(uint) []feedback.Core); ok {
+		r0 = rf(roomId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]feedback.Core)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(roomId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetUserFeedback provides a mock function with given fields: token
 func (_m *FeedbackService) GetUserFeedback(token interface{}) ([]feedback.Core, error) {
 	ret := _m.Called(token)
