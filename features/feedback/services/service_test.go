@@ -165,6 +165,7 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, feedback.Core{}, res)
 		repo.AssertExpectations(t)
 	})
+	//s
 	t.Run("server problem", func(t *testing.T) {
 		repo.On("Update", uint(1), uint(1), inputData).Return(feedback.Core{}, errors.New("server problem")).Once()
 		srv := New(repo)
