@@ -44,12 +44,12 @@ func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint, fileData 
 		return rooms.RoomEntity{}, errValidate
 	}
 
-	roomEntity.UserId = userId
 	url, err := helper.GetUrlImagesFromAWS(fileData)
 	if err != nil {
 		return rooms.RoomEntity{}, errors.New("validate: " + err.Error())
 	}
 
+	roomEntity.UserId = userId
 	roomEntity.RoomPicture = url
 	room_id, err := s.Data.Store(roomEntity, userId)
 	if err != nil {

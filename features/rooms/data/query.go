@@ -33,7 +33,11 @@ func (q *query) SelectAll() ([]rooms.RoomEntity, error) {
 
 func (q *query) SelectById(id uint) (rooms.RoomEntity, error) {
 	var room Room
-	if err := q.db.Preload("User").First(&room, id); err.Error != nil {
+	if err := q.db.Preload("User").
+		Select("rooms.*, CASE WHEN avg(feedbacks.rating) IS NULL THEN 0 ELSE avg(feedbacks.rating) END AS rating").
+		Joins("left join feedbacks ON feedbacks.room_id = rooms.id").
+		Group("rooms.id").
+		First(&room, id); err.Error != nil {
 		return rooms.RoomEntity{}, err.Error
 	}
 	return RoomToRoomEntity(room), nil
