@@ -5,13 +5,15 @@ import (
 )
 
 type Core struct {
-	ID            uint
-	UserID        uint `validate:"required"`
-	User          User
-	ReservationID uint    `validate:"required"`
-	RoomID        uint    `validate:"required"`
-	Rating        float64 `validate:"required"`
-	Feedback      string  `validate:"required"`
+	ID                 uint
+	UserID             uint `validate:"required"`
+	User               User
+	ReservationID      uint    `validate:"required"`
+	RoomID             uint    `validate:"required"`
+	Rating             float64 `validate:"required"`
+	Feedback           string  `validate:"required"`
+	UserName           string
+	UserProfilePicture string
 }
 
 type User struct {
@@ -27,6 +29,7 @@ type FeedbackHandler interface {
 	GetUserFeedback() echo.HandlerFunc
 	GetByID() echo.HandlerFunc
 	Update() echo.HandlerFunc
+	GetByRoomId() echo.HandlerFunc
 }
 
 type FeedbackService interface {
@@ -34,6 +37,7 @@ type FeedbackService interface {
 	GetUserFeedback(token interface{}) ([]Core, error)
 	GetByID(token interface{}, feedbackID uint) (Core, error)
 	Update(token interface{}, feedbackID uint, updatedFeedback Core) (Core, error)
+	GetFeedbackByRoomId(roomId uint) ([]Core, error)
 }
 
 type FeedbackData interface {
@@ -41,4 +45,5 @@ type FeedbackData interface {
 	GetUserFeedback(userID uint) ([]Core, error)
 	GetByID(userID uint, feedbackID uint) (Core, error)
 	Update(userID uint, feedBackID uint, updatedFeedback Core) (Core, error)
+	SelectFeedbackByRoomId(roomId uint) ([]Core, error)
 }

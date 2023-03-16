@@ -6,20 +6,24 @@ import (
 )
 
 type FeedbackResponse struct {
-	ID            uint    `json:"id,omitempty"`
-	RoomID        uint    `json:"room_id,omitempty"`
-	ReservationID uint    `json:"reservation_id,omitempty"`
-	Rating        float64 `json:"rating,omitempty"`
-	Feedback      string  `json:"feedback,omitempty"`
+	ID                 uint    `json:"id,omitempty"`
+	RoomID             uint    `json:"room_id,omitempty"`
+	ReservationID      uint    `json:"reservation_id,omitempty"`
+	Rating             float64 `json:"rating,omitempty"`
+	Feedback           string  `json:"feedback,omitempty"`
+	UserName           string  `json:"user_name,omitempty"`
+	UserProfilePicture string  `json:"user_profile_picture,omitempty"`
 }
 
 func ToFeedbackResponse(data feedback.Core) FeedbackResponse {
 	return FeedbackResponse{
-		ID:            data.ID,
-		RoomID:        data.RoomID,
-		Rating:        data.Rating,
-		Feedback:      data.Feedback,
-		ReservationID: data.ReservationID,
+		ID:                 data.ID,
+		RoomID:             data.RoomID,
+		Rating:             data.Rating,
+		Feedback:           data.Feedback,
+		ReservationID:      data.ReservationID,
+		UserName:           data.UserName,
+		UserProfilePicture: data.UserProfilePicture,
 	}
 }
 

@@ -82,3 +82,12 @@ func (fuc *feedbackUseCase) Update(token interface{}, feedbackID uint, updatedFe
 
 	return res, nil
 }
+
+func (fuc *feedbackUseCase) GetFeedbackByRoomId(roomId uint) ([]feedback.Core, error) {
+	res, err := fuc.qry.SelectFeedbackByRoomId(roomId)
+	if err != nil {
+		log.Println("query error", err.Error())
+		return []feedback.Core{}, errors.New("query error, problem with server")
+	}
+	return res, nil
+}
