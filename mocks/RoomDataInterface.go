@@ -64,6 +64,29 @@ func (_m *RoomDataInterface) SelectAll() ([]rooms.RoomEntity, error) {
 	return r0, r1
 }
 
+// SelectAllFilter provides a mock function with given fields: roomFilter
+func (_m *RoomDataInterface) SelectAllFilter(roomFilter rooms.RoomFilter) ([]rooms.RoomEntity, error) {
+	ret := _m.Called(roomFilter)
+
+	var r0 []rooms.RoomEntity
+	if rf, ok := ret.Get(0).(func(rooms.RoomFilter) []rooms.RoomEntity); ok {
+		r0 = rf(roomFilter)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]rooms.RoomEntity)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(rooms.RoomFilter) error); ok {
+		r1 = rf(roomFilter)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // SelectById provides a mock function with given fields: id
 func (_m *RoomDataInterface) SelectById(id uint) (rooms.RoomEntity, error) {
 	ret := _m.Called(id)

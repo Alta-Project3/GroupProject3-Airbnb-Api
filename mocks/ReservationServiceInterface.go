@@ -13,6 +13,20 @@ type ReservationServiceInterface struct {
 	mock.Mock
 }
 
+// CallBackMidtrans provides a mock function with given fields: id, status
+func (_m *ReservationServiceInterface) CallBackMidtrans(id uint, status string) error {
+	ret := _m.Called(id, status)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uint, string) error); ok {
+		r0 = rf(id, status)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // CheckAvailability provides a mock function with given fields: reservationEntity
 func (_m *ReservationServiceInterface) CheckAvailability(reservationEntity reservations.ReservationEntity) (bool, error) {
 	ret := _m.Called(reservationEntity)
@@ -69,6 +83,29 @@ func (_m *ReservationServiceInterface) GetById(id uint) (reservations.Reservatio
 	var r1 error
 	if rf, ok := ret.Get(1).(func(uint) error); ok {
 		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetByRoomId provides a mock function with given fields: roomId
+func (_m *ReservationServiceInterface) GetByRoomId(roomId uint) ([]reservations.ReservationEntity, error) {
+	ret := _m.Called(roomId)
+
+	var r0 []reservations.ReservationEntity
+	if rf, ok := ret.Get(0).(func(uint) []reservations.ReservationEntity); ok {
+		r0 = rf(roomId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]reservations.ReservationEntity)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(roomId)
 	} else {
 		r1 = ret.Error(1)
 	}
