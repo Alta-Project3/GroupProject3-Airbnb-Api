@@ -59,7 +59,7 @@ func (s *roomService) Create(roomEntity rooms.RoomEntity, userId uint, fileData 
 	return s.Data.SelectById(room_id)
 }
 
-func (s *roomService) Update(roomEntity rooms.RoomEntity, id, userId uint) (rooms.RoomEntity, error) {
+func (s *roomService) Update(roomEntity rooms.RoomEntity, id, userId uint, fileData multipart.FileHeader) (rooms.RoomEntity, error) {
 	checkDataExist, err1 := s.Data.SelectById(id)
 	if err1 != nil {
 		return checkDataExist, err1
@@ -69,7 +69,14 @@ func (s *roomService) Update(roomEntity rooms.RoomEntity, id, userId uint) (room
 		return checkDataExist, errors.New("not allowed to access this Id")
 	}
 
-	err := s.Data.Edit(roomEntity, id)
+	url, err := helper.GetUrlImagesFromAWS(fileData)
+	if err != nil {
+		return rooms.RoomEntity{}, errors.New("validate: " + err.Error())
+	}
+
+	roomEntity.RoomPicture = url
+
+	err = s.Data.Edit(roomEntity, id)
 	if err != nil {
 		return rooms.RoomEntity{}, err
 	}
