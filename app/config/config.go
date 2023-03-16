@@ -10,10 +10,11 @@ import (
 
 // Deklarasi Variable Global Untuk Memanggil file Secret Key di Env
 var (
-	JWTKey            = ""
-	AWS_REGION        = ""
-	ACCESS_KEY_ID     = ""
-	ACCESS_KEY_SECRET = ""
+	JWTKey              = ""
+	AWS_REGION          = ""
+	ACCESS_KEY_ID       = ""
+	ACCESS_KEY_SECRET   = ""
+	SERVER_KEY_MIDTRANS = ""
 )
 
 type DBConfig struct {
@@ -102,6 +103,7 @@ func ReadEnv() *DBConfig {
 	AWS_REGION = app.AWS_REGION
 	ACCESS_KEY_ID = app.ACCESS_KEY_ID
 	ACCESS_KEY_SECRET = app.ACCESS_KEY_SECRET
+	SERVER_KEY_MIDTRANS = app.SERVER_KEY_MIDTRANS
 
 	return &app
 }
