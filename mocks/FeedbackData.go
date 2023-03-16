@@ -78,6 +78,29 @@ func (_m *FeedbackData) GetUserFeedback(userID uint) ([]feedback.Core, error) {
 	return r0, r1
 }
 
+// SelectFeedbackByRoomId provides a mock function with given fields: roomId
+func (_m *FeedbackData) SelectFeedbackByRoomId(roomId uint) ([]feedback.Core, error) {
+	ret := _m.Called(roomId)
+
+	var r0 []feedback.Core
+	if rf, ok := ret.Get(0).(func(uint) []feedback.Core); ok {
+		r0 = rf(roomId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]feedback.Core)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(roomId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Update provides a mock function with given fields: userID, feedBackID, updatedFeedback
 func (_m *FeedbackData) Update(userID uint, feedBackID uint, updatedFeedback feedback.Core) (feedback.Core, error) {
 	ret := _m.Called(userID, feedBackID, updatedFeedback)
