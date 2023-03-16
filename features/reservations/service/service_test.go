@@ -129,3 +129,39 @@ func TestCheckAvailabilty(t *testing.T) {
 	})
 
 }
+
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewReservationDataInterface(t)
+
+	inputData := reservations.ReservationEntity{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}
+
+	srv := New(repo)
+	resData := reservations.ReservationEntity{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}
+
+	t.Run("success update reservation", func(t *testing.T) {
+		repo.On("Edit", inputData, uint(1)).Return(nil).Once()
+		repo.On("SelectById", uint(1)).Return(resData, nil).Once()
+		res, err := srv.Update(inputData, uint(1))
+
+		assert.NotNil(t, err)
+		assert.NotEqual(t, resData.Id, res.Id)
+		repo.AssertExpectations(t)
+	})
+
+}
+
+func TestCallBackMidtrans(t *testing.T) {
+	repo := mocks.NewReservationDataInterface(t)
+	inputData := reservations.ReservationEntity{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}
+	status := "success"
+	srv := New(repo)
+	// resData := reservations.ReservationEntity{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}
+
+	t.Run("success get callback", func(t *testing.T) {
+		repo.On("Edit", inputData, uint(1)).Return(nil).Once()
+		err := srv.CallBackMidtrans(uint(1), status)
+
+		assert.Nil(t, err)
+		repo.AssertExpectations(t)
+	})
+}
