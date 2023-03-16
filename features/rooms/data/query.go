@@ -93,31 +93,36 @@ func (q *query) Destroy(id uint) error {
 
 func (q *query) SelectAllFilter(roomFilter rooms.RoomFilter) ([]rooms.RoomEntity, error) {
 	var rooms []Room
-	err := q.db.Preload("User").
-		Select("rooms.*, CASE WHEN avg(feedbacks.rating) IS NULL THEN 0 ELSE avg(feedbacks.rating) END AS avg_rating").
+
+	var idRoomInReservation []Room
+	q.db.Select("distinct rooms.id").Where("date_start BETWEEN ? AND ? OR date_end BETWEEN ? AND ?", roomFilter.DateStart, roomFilter.DateEnd, roomFilter.DateStart, roomFilter.DateEnd).
+		Joins("join reservations ON reservations.room_id = rooms.id").
+		Find(&idRoomInReservation)
+
+	query := q.db.Preload("User").
+		Select("rooms.*, CASE WHEN avg(feedbacks.rating) IS NULL THEN 0 ELSE avg(feedbacks.rating) END AS rating").
 		Joins("left join feedbacks ON feedbacks.room_id = rooms.id").
-		Group("rooms.id").
-		Joins("inner join reservations ON reservations.room_id = rooms.id")
+		Group("rooms.id")
 
 	if roomFilter.PriceMin != 0 {
-		err.Where("rooms.price >= ?", roomFilter.PriceMin)
+		query.Where("rooms.price >= ?", roomFilter.PriceMin)
 	}
 
 	if roomFilter.PriceMax != 0 {
-		err.Where("rooms.price <= ?", roomFilter.PriceMax)
+		query.Where("rooms.price <= ?", roomFilter.PriceMax)
 	}
 
 	if roomFilter.Rating != 0 {
-		err.Where("avg_rating >= ?", roomFilter.Rating)
+		query.Having("avg(feedbacks.rating) >= ?", roomFilter.Rating)
 	}
 
 	if roomFilter.DateStart != "" || roomFilter.DateEnd != "" {
-		err.Where("date_start BETWEEN ? AND ? OR date_end BETWEEN ? AND ?", roomFilter.DateStart, roomFilter.DateEnd, roomFilter.DateStart, roomFilter.DateEnd)
+		query.Not(idRoomInReservation)
 	}
 
-	err.Find(&rooms)
-	if err.Error != nil {
-		return nil, err.Error
+	query.Find(&rooms)
+	if query.Error != nil {
+		return nil, query.Error
 	}
 	return ListRoomToRoomEntity(rooms), nil
 }
