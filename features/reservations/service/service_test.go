@@ -67,3 +67,20 @@ func TestGetReservation(t *testing.T) {
 	})
 
 }
+
+func TestGetById(t *testing.T) {
+	repo := mocks.NewReservationDataInterface(t)
+
+	resData := []reservations.ReservationEntity{{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}}
+	srv := New(repo)
+
+	t.Run("success get reservation", func(t *testing.T) {
+		repo.On("SelectByRoomId", mock.Anything).Return(resData, nil)
+		res, err := srv.GetByRoomId(uint(1))
+
+		assert.Nil(t, err)
+		assert.Equal(t, len(resData), len(res))
+		repo.AssertExpectations(t)
+	})
+
+}

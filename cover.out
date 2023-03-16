@@ -91,7 +91,7 @@ groupproject3-airbnb-api/features/reservations/service/service.go:95.16,97.3 1 0
 groupproject3-airbnb-api/features/reservations/service/service.go:113.17,115.3 1 1
 groupproject3-airbnb-api/features/reservations/service/service.go:115.8,125.3 2 0
 groupproject3-airbnb-api/features/reservations/service/service.go:130.100,132.2 1 1
-groupproject3-airbnb-api/features/reservations/service/service.go:134.97,136.2 1 0
+groupproject3-airbnb-api/features/reservations/service/service.go:134.97,136.2 1 1
 groupproject3-airbnb-api/features/reservations/service/service.go:138.77,143.16 3 0
 groupproject3-airbnb-api/features/reservations/service/service.go:146.2,146.12 1 0
 groupproject3-airbnb-api/features/reservations/service/service.go:143.16,145.3 1 0
