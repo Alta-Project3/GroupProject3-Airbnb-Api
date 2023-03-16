@@ -80,7 +80,7 @@ func ReadEnv() *DBConfig {
 	}
 
 	if val, found := os.LookupEnv("SERVER_KEY_MIDTRANS"); found {
-		app.ACCESS_KEY_SECRET = val
+		app.SERVER_KEY_MIDTRANS = val
 		isRead = false
 	}
 
