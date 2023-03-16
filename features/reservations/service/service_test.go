@@ -155,7 +155,6 @@ func TestCallBackMidtrans(t *testing.T) {
 	inputData := reservations.ReservationEntity{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}
 	status := "success"
 	srv := New(repo)
-	// resData := reservations.ReservationEntity{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}
 
 	t.Run("success get callback", func(t *testing.T) {
 		repo.On("Edit", inputData, uint(1)).Return(nil).Once()
