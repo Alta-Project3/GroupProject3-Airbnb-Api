@@ -22,6 +22,7 @@ func (q *query) SelectAll() ([]rooms.RoomEntity, error) {
 	var rooms []Room
 	err := q.db.Preload("User").
 		Select("rooms.*, CASE WHEN avg(feedbacks.rating) IS NULL THEN 0 ELSE avg(feedbacks.rating) END AS avg_rating").
+		Joins("User").
 		Joins("left join feedbacks ON feedbacks.room_id = rooms.id").
 		Group("rooms.id").
 		Find(&rooms)
@@ -101,6 +102,7 @@ func (q *query) SelectAllFilter(roomFilter rooms.RoomFilter) ([]rooms.RoomEntity
 
 	query := q.db.Preload("User").
 		Select("rooms.*, CASE WHEN avg(feedbacks.rating) IS NULL THEN 0 ELSE avg(feedbacks.rating) END AS rating").
+		Joins("User").
 		Joins("left join feedbacks ON feedbacks.room_id = rooms.id").
 		Group("rooms.id")
 
