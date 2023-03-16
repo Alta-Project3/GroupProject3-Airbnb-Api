@@ -73,6 +73,29 @@ func (_m *RoomServiceInterface) GetAll() ([]rooms.RoomEntity, error) {
 	return r0, r1
 }
 
+// GetAllFilter provides a mock function with given fields: roomFilter
+func (_m *RoomServiceInterface) GetAllFilter(roomFilter rooms.RoomFilter) ([]rooms.RoomEntity, error) {
+	ret := _m.Called(roomFilter)
+
+	var r0 []rooms.RoomEntity
+	if rf, ok := ret.Get(0).(func(rooms.RoomFilter) []rooms.RoomEntity); ok {
+		r0 = rf(roomFilter)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]rooms.RoomEntity)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(rooms.RoomFilter) error); ok {
+		r1 = rf(roomFilter)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetById provides a mock function with given fields: id
 func (_m *RoomServiceInterface) GetById(id uint) (rooms.RoomEntity, error) {
 	ret := _m.Called(id)
@@ -117,20 +140,20 @@ func (_m *RoomServiceInterface) GetByUserId(userId uint, userIdLogin uint) ([]ro
 	return r0, r1
 }
 
-// Update provides a mock function with given fields: roomEntity, id, userId
-func (_m *RoomServiceInterface) Update(roomEntity rooms.RoomEntity, id uint, userId uint) (rooms.RoomEntity, error) {
-	ret := _m.Called(roomEntity, id, userId)
+// Update provides a mock function with given fields: roomEntity, id, userId, fileData
+func (_m *RoomServiceInterface) Update(roomEntity rooms.RoomEntity, id uint, userId uint, fileData multipart.FileHeader) (rooms.RoomEntity, error) {
+	ret := _m.Called(roomEntity, id, userId, fileData)
 
 	var r0 rooms.RoomEntity
-	if rf, ok := ret.Get(0).(func(rooms.RoomEntity, uint, uint) rooms.RoomEntity); ok {
-		r0 = rf(roomEntity, id, userId)
+	if rf, ok := ret.Get(0).(func(rooms.RoomEntity, uint, uint, multipart.FileHeader) rooms.RoomEntity); ok {
+		r0 = rf(roomEntity, id, userId, fileData)
 	} else {
 		r0 = ret.Get(0).(rooms.RoomEntity)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(rooms.RoomEntity, uint, uint) error); ok {
-		r1 = rf(roomEntity, id, userId)
+	if rf, ok := ret.Get(1).(func(rooms.RoomEntity, uint, uint, multipart.FileHeader) error); ok {
+		r1 = rf(roomEntity, id, userId, fileData)
 	} else {
 		r1 = ret.Error(1)
 	}

@@ -48,6 +48,29 @@ func (_m *ReservationDataInterface) SelectById(id uint) (reservations.Reservatio
 	return r0, r1
 }
 
+// SelectByRoomId provides a mock function with given fields: roomId
+func (_m *ReservationDataInterface) SelectByRoomId(roomId uint) ([]reservations.ReservationEntity, error) {
+	ret := _m.Called(roomId)
+
+	var r0 []reservations.ReservationEntity
+	if rf, ok := ret.Get(0).(func(uint) []reservations.ReservationEntity); ok {
+		r0 = rf(roomId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]reservations.ReservationEntity)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(uint) error); ok {
+		r1 = rf(roomId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // SelectyReservation provides a mock function with given fields: userId
 func (_m *ReservationDataInterface) SelectyReservation(userId uint) ([]reservations.ReservationEntity, error) {
 	ret := _m.Called(userId)
