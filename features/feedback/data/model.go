@@ -8,12 +8,14 @@ import (
 
 type Feedback struct {
 	gorm.Model
-	UserID        uint
-	ReservationID uint
-	RoomID        uint
-	Rating        float64
-	Feedback      string
-	User          User
+	UserID             uint
+	ReservationID      uint
+	RoomID             uint
+	Rating             float64
+	Feedback           string
+	User               User
+	UserName           string
+	UserProfilePicture string
 }
 
 type Room struct {
@@ -45,11 +47,13 @@ type User struct {
 
 func DataToCore(data Feedback) feedback.Core {
 	return feedback.Core{
-		ID:            data.ID,
-		ReservationID: data.ReservationID,
-		RoomID:        data.RoomID,
-		Rating:        data.Rating,
-		Feedback:      data.Feedback,
+		ID:                 data.ID,
+		ReservationID:      data.ReservationID,
+		RoomID:             data.RoomID,
+		Rating:             data.Rating,
+		Feedback:           data.Feedback,
+		UserName:           data.UserName,
+		UserProfilePicture: data.UserProfilePicture,
 		User: feedback.User{
 			ID:      data.User.ID,
 			Name:    data.User.Name,
@@ -58,6 +62,13 @@ func DataToCore(data Feedback) feedback.Core {
 			Address: data.User.Address,
 		},
 	}
+}
+
+func ListDataToDataCore(feedback []Feedback) (feedbackCore []feedback.Core) {
+	for _, v := range feedback {
+		feedbackCore = append(feedbackCore, DataToCore(v))
+	}
+	return feedbackCore
 }
 
 func CoreToData(data feedback.Core) Feedback {

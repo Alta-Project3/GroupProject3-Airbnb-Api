@@ -101,3 +101,18 @@ func (fq *feedbackQuery) Update(userID uint, feedBackID uint, updatedFeedback fe
 	}
 	return updatedFeedback, nil
 }
+
+func (fq *feedbackQuery) SelectFeedbackByRoomId(roomId uint) ([]feedback.Core, error) {
+	var feedbacks []Feedback
+	err := fq.db.Where("room_id = ?", roomId).
+		Select("feedbacks.*,users.name as user_name,users.profile_picture as user_profile_picture").
+		Joins("inner join users ON users.id = feedbacks.user_id").
+		Find(&feedbacks).Error
+
+	if err != nil {
+		log.Println("query error", err.Error())
+		return []feedback.Core{}, errors.New("server error")
+	}
+	return ListDataToDataCore(feedbacks), nil
+
+}

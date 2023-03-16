@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"groupproject3-airbnb-api/features/feedback"
 	"groupproject3-airbnb-api/helper"
 	"log"
@@ -111,5 +112,28 @@ func (fc *feedbackControll) Update() echo.HandlerFunc {
 			"message": "success add feedback",
 		})
 
+	}
+}
+
+func (fc *feedbackControll) GetByRoomId() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		roomId, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			log.Println("convert id error", err.Error())
+			return c.JSON(http.StatusBadGateway, "Invalid input")
+		}
+
+		fmt.Println("ROOM ID", roomId)
+
+		res, err := fc.srv.GetFeedbackByRoomId(uint(roomId))
+
+		if err != nil {
+			if strings.Contains(err.Error(), "feedback") {
+				return c.JSON(http.StatusNotFound, map[string]interface{}{
+					"message": "feedback not found",
+				})
+			}
+		}
+		return c.JSON(helper.PrintSuccessResponse(http.StatusOK, "success get feedback detail", GetFeedbackResp(res)))
 	}
 }
