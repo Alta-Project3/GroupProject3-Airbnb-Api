@@ -106,9 +106,9 @@ paths:
                   id: 1
                   name: "Alif Muhamad Hafidz"
                   email: "alifmuhamadhafidz23@gmail.com"
-                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
                 message: "login success"
-
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySUQiOjR9.QTZxERh4CwC_UnL_eJvTi_A_qdLeBZ-IjR4nqoxjodk"
+                
         400:
           $ref: "#/components/responses/400"
         404:
@@ -314,31 +314,45 @@ paths:
                 data:
                   [
                     {
-                      id: 1,
-                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
+                      "id": 1,
                       "user_id": 1,
-                      "room_name": "Villa Bali Green",
-                      "price": 25000,
-                      "description": "string",
-                      "latitude": 29.4,
-                      "longitude": 30.5,
+                      "room_name": "Villa A",
+                      "room_picture": "",
+                      "price": 2000,
+                      "description": "aaaaa",
+                      "latitude": 1.2,
+                      "longitude": 2.2,
+                      "user": {
+                          "id": 1,
+                          "name": "Alif Muhamad Hafidz",
+                          "email": "alifmuhamadhafidz23@gmail.com"
+                      },
+                      "rating": 0
                     },
                     {
-                      id: 2,
-                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
-                      "user_id": 2,
-                      "room_name": "Villa Bali Green",
-                      "price": 25000,
-                      "description": "string",
-                      "latitude": 29.4,
-                      "longitude": 30.5,
-                    },
+                      "id": 2,
+                      "user_id": 1,
+                      "room_name": "Villa A",
+                      "room_picture": "",
+                      "price": 3000,
+                      "description": "aaaaa",
+                      "latitude": 1.2,
+                      "longitude": 2.2,
+                      "user": {
+                          "id": 1,
+                          "name": "Alif Muhamad Hafidz",
+                          "email": "alifmuhamadhafidz23@gmail.com"
+                      },
+                      "rating": 0
+                    }
                   ]
-                message: "success show all room"
+                message: "-"
+                status: true
         400:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+    
     post:
       tags:
         - Room
@@ -400,6 +414,7 @@ paths:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+ 
   /rooms/{id}:
     parameters:
       - in: path
@@ -423,7 +438,7 @@ paths:
                 $ref: "#/components/schemas/responseObject"
               example:
                 data:
-                  id: 1
+                  "id": 1
                   "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
                   "user_id": 1
                   "room_name": "Villa Bali Green"
@@ -431,11 +446,19 @@ paths:
                   "description": "string"
                   "latitude": 29.4
                   "longitude": 30.5
-                message: "success get room details"
+                  "user": {
+                    "id": 2,
+                    "name": "EDIt",
+                    "email": "alifmuhamadhafidz@gmail.com"
+                  }
+                  "rating": 3.4285714285714284
+                message: "-"
+                status : true
         400:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+    
     put:
       tags:
         - Room
@@ -494,7 +517,8 @@ paths:
                   "description": "string"
                   "latitude": 29.4
                   "longitude": 30.5
-                message: "success update book"
+                message: "-"
+                status: true
         400:
           $ref: "#/components/responses/400"
         404:
@@ -544,7 +568,7 @@ paths:
                   message: "data not found"
         500:
           $ref: "#/components/responses/500"
-  /users/rooms:
+  /users/{id}/rooms:
     get:
       tags:
         - Room
@@ -564,30 +588,138 @@ paths:
                   [
                     {
                       "id": 1,
-                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
                       "user_id": 1,
-                      "room_name": "Villa Bali Green",
-                      "price": 25000,
-                      "description": "string",
-                      "latitude": 29.4,
-                      "longitude": 30.5,
+                      "room_name": "Villa A",
+                      "room_picture": "",
+                      "price": 2000,
+                      "description": "aaaaa",
+                      "latitude": 1.2,
+                      "longitude": 2.2,
+                      "user": {
+                          "id": 1,
+                          "name": "Alif Muhamad Hafidz",
+                          "email": "alifmuhamadhafidz23@gmail.com"
+                      },
+                      "rating": 0
                     },
                     {
                       "id": 2,
-                      "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg",
                       "user_id": 1,
-                      "room_name": "Villa Bali Green",
-                      "price": 25000,
-                      "description": "string",
-                      "latitude": 29.4,
-                      "longitude": 30.5,
-                    },
+                      "room_name": "Villa A",
+                      "room_picture": "",
+                      "price": 3000,
+                      "description": "aaaaa",
+                      "latitude": 1.2,
+                      "longitude": 2.2,
+                      "user": {
+                          "id": 1,
+                          "name": "Alif Muhamad Hafidz",
+                          "email": "alifmuhamadhafidz23@gmail.com"
+                      },
+                      "rating": 0
+                    }
                   ]
-                message: "success get all user room"
+                message: "-"
+                status : true
         400:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+  
+  /rooms/filter/data:
+    parameters:
+      - in: path
+        name: rating
+        required: true
+        description: average rating
+        schema:
+          type: integer
+      - in: path
+        name: date_start
+        required: true
+        description: date start
+        schema:
+          type: string
+          format: date
+      - in: path
+        name: date_end
+        required: true
+        description: date end
+        schema:
+          type: string
+          format: date
+      - in: path
+        name: price_min
+        required: true
+        description: price min
+        schema:
+          type: integer
+      - in: path
+        name: price_max
+        required: true
+        description: price max
+        schema:
+          type: integer
+    get:
+      tags:
+        - Room
+      summary: filter
+      description: filter room
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: success get all user room
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  [
+                    {
+                      "id": 1,
+                      "user_id": 1,
+                      "room_name": "Villa A",
+                      "room_picture": "",
+                      "price": 2000,
+                      "description": "aaaaa",
+                      "latitude": 1.2,
+                      "longitude": 2.2,
+                      "user": {
+                          "id": 1,
+                          "name": "Alif Muhamad Hafidz",
+                          "email": "alifmuhamadhafidz23@gmail.com"
+                      },
+                      "rating": 0
+                    },
+                    {
+                      "id": 2,
+                      "user_id": 1,
+                      "room_name": "Villa A",
+                      "room_picture": "",
+                      "price": 3000,
+                      "description": "aaaaa",
+                      "latitude": 1.2,
+                      "longitude": 2.2,
+                      "user": {
+                          "id": 1,
+                          "name": "Alif Muhamad Hafidz",
+                          "email": "alifmuhamadhafidz23@gmail.com"
+                      },
+                      "rating": 0
+                    }
+                  ]
+                message: "-"
+                status : true
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+  
+####################################
+#  RESERVATION
+####################################
   /reservations/check:
     post:
       tags:
@@ -621,11 +753,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/responseObject"
               example:
-                data:
-                  room_id: 1
-                  date_start: "2023-03-13"
-                  date_end: "2023-03-17"
-                message: "success check reservation"
+                {
+                  "data": null,
+                  "message": "available",
+                  "status": true
+                }
         400:
           $ref: "#/components/responses/400"
         500:
@@ -648,13 +780,7 @@ paths:
               room_id: 1
               date_start: "2023-03-13"
               date_end: "2023-03-17"
-              duration: 2
               total_price: 4000000
-              name: "alif"
-              card_number: "0110 4567 8795 4523"
-              cvv: "579"
-              month: "april"
-              year: "2021"
       responses:
         200:
           description: "success create reservation"
@@ -663,7 +789,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/responseObject"
               example:
-                message: "success create reservation"
+                {
+                  "data": {
+                      "id": 9,
+                      "user_id": 1,
+                      "room_id": 2,
+                      "date_start": "2023-03-17",
+                      "date_end": "2023-03-19",
+                      "duration": 2,
+                      "total_price": 4000000,
+                      "status_reservation": "pending",
+                      "payment_link": "https://app.sandbox.midtrans.com/snap/v3/redirection/3a352037-f306-4a80-953f-31275aaf9314",
+                      "user": {
+                          "id": 1,
+                          "name": "Alif Muhamad Hafidz"
+                      },
+                      "room": {
+                          "room_name": "Villa A",
+                          "room_picture": "",
+                          "user": {},
+                          "rating": 0
+                      },
+                      "feedback_id": 0,
+                      "feedback_rating": 0
+                  },
+                  "message": "-",
+                  "status": true
+              }
         400:
           $ref: "#/components/responses/400"
         500:
@@ -701,10 +853,56 @@ paths:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+  
+  /rooms/{id}/reservation:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: The ID of the room
+        schema:
+          type: integer
+    get:
+      tags:
+        - Room
+      summary: Get a reservation by room ID
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "Get a reservation by room ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                data:
+                  "id": 1
+                  "room_picture": "https://kurabsent.s3.amazonaws.com/2022-07-06%2006%3A40%3A47.jpg"
+                  "user_id": 1
+                  "room_name": "Villa Bali Green"
+                  "price": 25000
+                  "description": "string"
+                  "latitude": 29.4
+                  "longitude": 30.5
+                  "user": {
+                    "id": 2,
+                    "name": "EDIt",
+                    "email": "alifmuhamadhafidz@gmail.com"
+                  }
+                  "rating": 3.4285714285714284
+                message: "-"
+                status : true
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    
+  
   /feedbacks:
     post:
       tags:
-        - Feedbacks
+        - Feedback
       summary: create feedback
       description: create feedback
       security:
@@ -717,7 +915,8 @@ paths:
               $ref: "#/components/schemas/Feedback"
             example:
               room_id: 1
-              rating: "*****"
+              reservation_id: 1
+              rating: 5
               feedback: "rumahnya sangat bagus"
       responses:
         201:
@@ -730,11 +929,141 @@ paths:
                   message:
                     type: string
               example:
-                message: "success add feedback"
+                "data": {
+                    "id": 8,
+                    "room_id": 2,
+                    "reservation_id": 1,
+                    "rating": 3,
+                    "feedback": "nyaman"
+                  }
+                "message": "success add feedback"
         400:
           $ref: "#/components/responses/400"
         500:
           $ref: "#/components/responses/500"
+
+  /feedbacks/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: The ID Feedback
+        schema:
+          type: integer
+    get:
+      tags:
+        - Feedback
+      summary: Get a feedbacks  ID
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "Get a feedbacks by ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                {
+                    "data": {
+                        "id": 1,
+                        "room_id": 2,
+                        "reservation_id": 1,
+                        "rating": 3
+                    },
+                    "message": "success get feedback detail"
+                }
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    put:
+      tags:
+        - Feedback
+      summary: Update a feedbacks  ID
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Feedback"
+            example:
+              room_id: 1
+              rating: 5
+              feedback: "rumahnya sangat bagus"
+      responses:
+        200:
+          description: "Get a feedbacks by ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                {
+                    "data": {
+                        "id": 1,
+                        "room_id": 2,
+                        "reservation_id": 1,
+                        "rating": 5
+                    },
+                    "message": "success get feedback detail"
+                }
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    
+  /rooms/{id}/feedbacks:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: The ID Room
+        schema:
+          type: integer
+    get:
+      tags:
+        - Feedback
+      summary: Get a feedbacks  ID ROOM
+      security:
+        - JWTAuth: []
+      responses:
+        200:
+          description: "Get a feedbacks by ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/responseObject"
+              example:
+                {
+                  "data": [
+                      {
+                          "id": 1,
+                          "room_id": 2,
+                          "reservation_id": 1,
+                          "rating": 3,
+                          "user_name": "EDIt",
+                          "user_profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      },
+                      {
+                          "id": 2,
+                          "room_id": 2,
+                          "reservation_id": 1,
+                          "rating": 5,
+                          "user_name": "EDIt",
+                          "user_profile_picture": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      },
+                    ],
+                  "message": "success get feedback detail"
+                }
+        400:
+          $ref: "#/components/responses/400"
+        500:
+          $ref: "#/components/responses/500"
+    
+
 ####################################
 #  COMPONENT
 ####################################
