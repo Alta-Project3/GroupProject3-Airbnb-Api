@@ -17,10 +17,10 @@ groupproject3-airbnb-api/features/feedback/services/service.go:55.16,57.49 2 1
 groupproject3-airbnb-api/features/feedback/services/service.go:62.3,62.42 1 1
 groupproject3-airbnb-api/features/feedback/services/service.go:57.49,59.4 1 1
 groupproject3-airbnb-api/features/feedback/services/service.go:59.9,61.4 1 1
-groupproject3-airbnb-api/features/feedback/services/service.go:67.126,70.17 2 0
-groupproject3-airbnb-api/features/feedback/services/service.go:73.2,75.16 2 0
-groupproject3-airbnb-api/features/feedback/services/service.go:83.2,83.17 1 0
+groupproject3-airbnb-api/features/feedback/services/service.go:67.126,70.17 2 1
+groupproject3-airbnb-api/features/feedback/services/service.go:73.2,75.16 2 1
+groupproject3-airbnb-api/features/feedback/services/service.go:83.2,83.17 1 1
 groupproject3-airbnb-api/features/feedback/services/service.go:70.17,72.3 1 0
-groupproject3-airbnb-api/features/feedback/services/service.go:75.16,76.49 1 0
-groupproject3-airbnb-api/features/feedback/services/service.go:76.49,78.4 1 0
-groupproject3-airbnb-api/features/feedback/services/service.go:78.9,80.4 1 0
+groupproject3-airbnb-api/features/feedback/services/service.go:75.16,76.49 1 1
+groupproject3-airbnb-api/features/feedback/services/service.go:76.49,78.4 1 1
+groupproject3-airbnb-api/features/feedback/services/service.go:78.9,80.4 1 1
