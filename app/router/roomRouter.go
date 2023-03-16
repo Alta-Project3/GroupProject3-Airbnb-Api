@@ -18,11 +18,13 @@ func roomRouter(db *gorm.DB, e *echo.Echo) {
 
 	g := e.Group("/rooms")
 	g.Use(echojwt.JWT([]byte(config.JWTKey)))
-	g.GET("", handler.GetAllFilter)
+	g.GET("", handler.GetAll)
 	g.GET("/:id", handler.GetById)
 	g.POST("", handler.Create)
 	g.PUT("/:id", handler.Update)
 	g.DELETE("/:id", handler.Delete)
+
+	g.GET("/filter/data", handler.GetAllFilter)
 
 	u := e.Group("")
 	u.Use(echojwt.JWT([]byte(config.JWTKey)))
