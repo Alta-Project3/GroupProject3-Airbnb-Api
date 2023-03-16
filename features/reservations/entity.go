@@ -17,6 +17,8 @@ type ReservationEntity struct {
 	TotalPrice        int
 	StatusReservation string
 	PaymentLink       string
+	FeedbackId        uint
+	FeedbackRating    float64
 }
 
 type ReservationServiceInterface interface {

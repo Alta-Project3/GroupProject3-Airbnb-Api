@@ -118,7 +118,7 @@ func (h *RoomHandler) GetAllFilter(c echo.Context) error {
 	roomFilter := rooms.RoomFilter{
 		PriceMin:  priceMin,
 		PriceMax:  priceMax,
-		Rating:    rating,
+		Rating:    float64(rating),
 		DateStart: c.QueryParam("date_start"),
 		DateEnd:   c.QueryParam("date_end"),
 	}

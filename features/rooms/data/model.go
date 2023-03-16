@@ -20,7 +20,7 @@ type Room struct {
 	Latitude    float64
 	Longitude   float64
 	Address     string
-	Rating      int
+	Rating      float64
 }
 
 func RoomEntityToRoom(roomEntity rooms.RoomEntity) Room {

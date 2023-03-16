@@ -19,6 +19,8 @@ type ReservationResponse struct {
 	PaymentLink       string            `json:"payment_link"`
 	User              user.UserResponse `json:"user,omitempty"`
 	Room              room.RoomResponse `json:"room,omitempty"`
+	FeedbackId        uint              `json:"feedback_id"`
+	FeedbackRating    float64           `json:"feedback_rating"`
 }
 
 func ReservationEntityToReservationResponse(reservationEntity reservations.ReservationEntity) ReservationResponse {
@@ -32,6 +34,8 @@ func ReservationEntityToReservationResponse(reservationEntity reservations.Reser
 		TotalPrice:        reservationEntity.TotalPrice,
 		StatusReservation: reservationEntity.StatusReservation,
 		PaymentLink:       reservationEntity.PaymentLink,
+		FeedbackRating:    reservationEntity.FeedbackRating,
+		FeedbackId:        reservationEntity.FeedbackId,
 	}
 
 	if !reflect.ValueOf(reservationEntity.User).IsZero() {

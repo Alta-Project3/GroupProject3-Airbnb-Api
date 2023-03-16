@@ -23,6 +23,8 @@ type Reservation struct {
 	TotalPrice        int
 	StatusReservation string
 	PaymentLink       string
+	FeedbackId        uint
+	FeedbackRating    float64
 }
 
 func ReservationEntityToReservation(reservationEntity reservations.ReservationEntity) Reservation {
@@ -35,6 +37,8 @@ func ReservationEntityToReservation(reservationEntity reservations.ReservationEn
 		TotalPrice:        reservationEntity.TotalPrice,
 		StatusReservation: reservationEntity.StatusReservation,
 		PaymentLink:       reservationEntity.PaymentLink,
+		FeedbackRating:    reservationEntity.FeedbackRating,
+		FeedbackId:        reservationEntity.FeedbackId,
 	}
 }
 
@@ -49,6 +53,8 @@ func ReservationToReservationEntity(reservation Reservation) reservations.Reserv
 		TotalPrice:        reservation.TotalPrice,
 		StatusReservation: reservation.StatusReservation,
 		PaymentLink:       reservation.PaymentLink,
+		FeedbackId:        reservation.FeedbackId,
+		FeedbackRating:    reservation.FeedbackRating,
 	}
 
 	if !reflect.ValueOf(reservation.User).IsZero() {

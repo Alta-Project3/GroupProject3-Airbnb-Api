@@ -33,7 +33,11 @@ func (q *query) Edit(reservationEntity reservations.ReservationEntity, id uint) 
 
 func (q *query) SelectyReservation(userId uint) ([]reservations.ReservationEntity, error) {
 	var reservations []Reservation
-	err := q.db.Preload("User").Preload("Room").Where("user_id = ?", userId).Find(&reservations)
+	err := q.db.Preload("User").Preload("Room").
+		Select("reservations.*,feedbacks.rating as feedback_rating,feedbacks.id as feedback_id").
+		Joins("left join feedbacks ON feedbacks.reservation_id = reservations.id").
+		Where("reservations.user_id = ?", userId).
+		Find(&reservations)
 	if err.Error != nil {
 		return nil, err.Error
 	}

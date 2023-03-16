@@ -16,7 +16,7 @@ type RoomEntity struct {
 	Latitude    float64 `validate:"required"`
 	Longitude   float64 `validate:"required"`
 	Address     string  `validate:"required"`
-	Rating      int
+	Rating      float64
 }
 
 type RoomFilter struct {
@@ -24,7 +24,7 @@ type RoomFilter struct {
 	PriceMax  int
 	DateStart string
 	DateEnd   string
-	Rating    int
+	Rating    float64
 }
 
 type RoomServiceInterface interface {
