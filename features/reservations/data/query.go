@@ -58,3 +58,12 @@ func (q *query) Store(reservationEntity reservations.ReservationEntity) (uint, e
 	}
 	return reservation.ID, nil
 }
+
+func (q *query) SelectByRoomId(roomId uint) ([]reservations.ReservationEntity, error) {
+	var reservations []Reservation
+	err := q.db.Preload("Room").Where("room_id = ?", roomId).Find(&reservations)
+	if err.Error != nil {
+		return nil, err.Error
+	}
+	return ListReservationToReservationEntity(reservations), nil
+}

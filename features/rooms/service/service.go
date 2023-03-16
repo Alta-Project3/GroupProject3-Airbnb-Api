@@ -88,3 +88,16 @@ func (s *roomService) Delete(id, userId uint) error {
 
 	return s.Data.Destroy(id)
 }
+
+func (s *roomService) GetAllFilter(roomFilter rooms.RoomFilter) ([]rooms.RoomEntity, error) {
+	_, checkDateStart := helper.IsDate(roomFilter.DateStart)
+	if !checkDateStart && roomFilter.DateStart != "" {
+		return nil, errors.New("not valid date start. format date, ex : 2006-02-25")
+	}
+
+	_, checkDateEnd := helper.IsDate(roomFilter.DateEnd)
+	if !checkDateEnd && roomFilter.DateEnd != "" {
+		return nil, errors.New("not valid date end. format date, ex : 2006-02-25")
+	}
+	return s.Data.SelectAllFilter(roomFilter)
+}

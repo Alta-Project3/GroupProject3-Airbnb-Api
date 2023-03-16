@@ -4,6 +4,7 @@ import (
 	"groupproject3-airbnb-api/features/reservations"
 	"groupproject3-airbnb-api/helper"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -56,4 +57,14 @@ func (t *ReservationHandler) CreateReservation(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", ReservationEntityToReservationResponse(reservations)))
+}
+
+func (t *ReservationHandler) GetByRoomId(c echo.Context) error {
+	roomId, _ := strconv.Atoi(c.Param("id"))
+	reservations, err := t.Service.GetByRoomId(uint(roomId))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.ResponseFail(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", ListReservationEntityToReservationResponse(reservations)))
 }

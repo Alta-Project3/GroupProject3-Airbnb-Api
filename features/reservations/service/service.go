@@ -130,3 +130,7 @@ func (s *ReservationService) Create(reservationEntity reservations.ReservationEn
 func (s *ReservationService) GetReservation(userId uint) ([]reservations.ReservationEntity, error) {
 	return s.Data.SelectyReservation(uint(userId))
 }
+
+func (s *ReservationService) GetByRoomId(roomId uint) ([]reservations.ReservationEntity, error) {
+	return s.Data.SelectByRoomId(uint(roomId))
+}

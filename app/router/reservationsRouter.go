@@ -21,4 +21,8 @@ func reservationRouter(db *gorm.DB, e *echo.Echo) {
 	g.POST("/check", handler.CheckAvailability)
 	g.GET("", handler.GetReservation)
 	g.POST("", handler.CreateReservation)
+
+	u := e.Group("")
+	u.Use(echojwt.JWT([]byte(config.JWTKey)))
+	u.GET("/rooms/:id/reservations", handler.GetByRoomId)
 }

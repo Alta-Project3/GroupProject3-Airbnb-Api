@@ -19,6 +19,14 @@ type RoomEntity struct {
 	Rating      int
 }
 
+type RoomFilter struct {
+	PriceMin  int
+	PriceMax  int
+	DateStart string
+	DateEnd   string
+	Rating    int
+}
+
 type RoomServiceInterface interface {
 	GetAll() ([]RoomEntity, error)
 	GetById(id uint) (RoomEntity, error)
@@ -26,6 +34,7 @@ type RoomServiceInterface interface {
 	Create(roomEntity RoomEntity, userId uint, fileData multipart.FileHeader) (RoomEntity, error)
 	Update(roomEntity RoomEntity, id, userId uint) (RoomEntity, error)
 	Delete(id, userId uint) error
+	GetAllFilter(roomFilter RoomFilter) ([]RoomEntity, error)
 }
 
 type RoomDataInterface interface {
@@ -35,4 +44,5 @@ type RoomDataInterface interface {
 	Store(roomEntity RoomEntity, userId uint) (uint, error)
 	Edit(roomEntity RoomEntity, id uint) error
 	Destroy(id uint) error
+	SelectAllFilter(roomFilter RoomFilter) ([]RoomEntity, error)
 }

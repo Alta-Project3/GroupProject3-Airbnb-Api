@@ -101,3 +101,24 @@ func (h *RoomHandler) Delete(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, helper.ResponseSuccess("Delete Data Success", nil))
 }
+
+func (h *RoomHandler) GetAllFilter(c echo.Context) error {
+	priceMin, _ := strconv.Atoi(c.QueryParam("price_min"))
+	priceMax, _ := strconv.Atoi(c.QueryParam("price_max"))
+	rating, _ := strconv.Atoi(c.QueryParam("rating"))
+
+	roomFilter := rooms.RoomFilter{
+		PriceMin:  priceMin,
+		PriceMax:  priceMax,
+		Rating:    rating,
+		DateStart: c.QueryParam("date_start"),
+		DateEnd:   c.QueryParam("date_end"),
+	}
+
+	classEntity, err := h.Service.GetAllFilter(roomFilter)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helper.ResponseFail("error read data"))
+	}
+	listClassResponse := ListRoomEntityToRoomResponse(classEntity)
+	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", listClassResponse))
+}

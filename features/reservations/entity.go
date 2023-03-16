@@ -25,6 +25,7 @@ type ReservationServiceInterface interface {
 	Create(reservationEntity ReservationEntity) (ReservationEntity, error)
 
 	GetById(id uint) (ReservationEntity, error)
+	GetByRoomId(roomId uint) ([]ReservationEntity, error)
 	Update(reservationEntity ReservationEntity, id uint) (ReservationEntity, error)
 }
 
@@ -34,5 +35,6 @@ type ReservationDataInterface interface {
 	Store(reservationEntity ReservationEntity) (uint, error)
 
 	SelectById(id uint) (ReservationEntity, error)
+	SelectByRoomId(roomId uint) ([]ReservationEntity, error)
 	Edit(reservationEntity ReservationEntity, id uint) error
 }
