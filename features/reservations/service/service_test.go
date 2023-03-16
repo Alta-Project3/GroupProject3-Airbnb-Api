@@ -101,3 +101,31 @@ func TestGetById(t *testing.T) {
 	})
 
 }
+
+func TestCheckAvailabilty(t *testing.T) {
+	repo := mocks.NewReservationDataInterface(t)
+
+	inputData := reservations.ReservationEntity{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}
+	resData := []reservations.ReservationEntity{{Id: 1, RoomId: 1, DateStart: "2023-03-16", DateEnd: "2023-03-19", TotalPrice: 2500000}}
+	srv := New(repo)
+	resAvailable := true
+
+	t.Run("success get check availability", func(t *testing.T) {
+		repo.On("SelectyRoomAndDateRange", inputData).Return(resData, nil)
+		_, err := srv.CheckAvailability(inputData)
+
+		assert.NotNil(t, err)
+		assert.NotEqual(t, len(resData), resAvailable)
+		repo.AssertExpectations(t)
+	})
+
+	t.Run("not valid date start frmat", func(t *testing.T) {
+		repo.On("SelectyRoomAndDateRange", mock.Anything).Return([]reservations.ReservationEntity{}, errors.New("not valid date start format"))
+		res, err := srv.CheckAvailability(inputData)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "valid")
+		assert.NotEqual(t, reservations.ReservationEntity{}, res)
+		repo.AssertExpectations(t)
+	})
+
+}
