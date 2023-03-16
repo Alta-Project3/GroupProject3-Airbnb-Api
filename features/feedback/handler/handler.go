@@ -109,7 +109,7 @@ func (fc *feedbackControll) Update() echo.HandlerFunc {
 
 		return c.JSON(http.StatusCreated, map[string]interface{}{
 			"data":    ToFeedbackResponse(res),
-			"message": "success add feedback",
+			"message": "success update feedback",
 		})
 
 	}
