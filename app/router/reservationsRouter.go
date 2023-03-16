@@ -25,4 +25,6 @@ func reservationRouter(db *gorm.DB, e *echo.Echo) {
 	u := e.Group("")
 	u.Use(echojwt.JWT([]byte(config.JWTKey)))
 	u.GET("/rooms/:id/reservations", handler.GetByRoomId)
+
+	e.POST("reservations/midtrans/callback", handler.CallBackMidtrans)
 }

@@ -5,6 +5,7 @@ import (
 	"groupproject3-airbnb-api/helper"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -67,4 +68,22 @@ func (t *ReservationHandler) GetByRoomId(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", ListReservationEntityToReservationResponse(reservations)))
+}
+
+func (t *ReservationHandler) CallBackMidtrans(c echo.Context) error {
+	var form helper.ResponseFromCallbackMidtrans
+
+	if err := c.Bind(&form); err != nil {
+		return c.JSON(http.StatusBadRequest, helper.ResponseFail("error bind data"))
+	}
+
+	idString := strings.Split(form.OrderId, "-")
+	orderId, _ := strconv.Atoi(idString[1])
+
+	err := t.Service.CallBackMidtrans(uint(orderId), form.TransactionStatus)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, helper.ResponseFail(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, helper.ResponseSuccess("-", ListReservationEntityToReservationResponse(nil)))
 }

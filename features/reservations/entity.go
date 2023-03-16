@@ -27,6 +27,7 @@ type ReservationServiceInterface interface {
 	GetById(id uint) (ReservationEntity, error)
 	GetByRoomId(roomId uint) ([]ReservationEntity, error)
 	Update(reservationEntity ReservationEntity, id uint) (ReservationEntity, error)
+	CallBackMidtrans(id uint, status string) error
 }
 
 type ReservationDataInterface interface {

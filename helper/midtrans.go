@@ -1,6 +1,9 @@
 package helper
 
 import (
+	"crypto/sha512"
+	"encoding/hex"
+
 	"github.com/Findryankp/snapMidtransGo"
 )
 
@@ -19,4 +22,19 @@ func PostMidtrans(data map[string]any) (string, error) {
 
 	test, err := snapMidtransGo.SanboxRequestSnapMidtrans(postData)
 	return test, err
+}
+
+type ResponseFromCallbackMidtrans struct {
+	TransactionStatus string `json:"transaction_status"`
+	OrderId           string `json:"order_id"`
+	StatusCode        string `json:"status_code"`
+	SignatureKey      string `json:"signature_key"`
+}
+
+func ValidateSignatureKey(response ResponseFromCallbackMidtrans, orderId, statusCode string) bool {
+	// SHA512(order_id+status_code+gross_amount+ServerKey)
+	str := orderId + statusCode + ServerKey
+	hash := sha512.Sum512([]byte(str))
+	hashStr := hex.EncodeToString(hash[:])
+	return string(hashStr) == response.SignatureKey
 }

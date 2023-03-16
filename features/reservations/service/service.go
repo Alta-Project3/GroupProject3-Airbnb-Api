@@ -101,7 +101,7 @@ func (s *ReservationService) Create(reservationEntity reservations.ReservationEn
 
 	//call midtrans
 	postData := map[string]any{
-		"order_id":  "orders-20" + strconv.Itoa(int(reservationId)),
+		"order_id":  "alta-" + strconv.Itoa(int(reservationId)),
 		"nominal":   totalPrice,
 		"firstname": "Alta",
 		"lastname":  "Room",
@@ -133,4 +133,15 @@ func (s *ReservationService) GetReservation(userId uint) ([]reservations.Reserva
 
 func (s *ReservationService) GetByRoomId(roomId uint) ([]reservations.ReservationEntity, error) {
 	return s.Data.SelectByRoomId(uint(roomId))
+}
+
+func (s *ReservationService) CallBackMidtrans(id uint, status string) error {
+	reservations := reservations.ReservationEntity{
+		StatusReservation: status,
+	}
+	err := s.Data.Edit(reservations, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
