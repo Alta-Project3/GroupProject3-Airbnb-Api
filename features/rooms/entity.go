@@ -32,7 +32,7 @@ type RoomServiceInterface interface {
 	GetById(id uint) (RoomEntity, error)
 	GetByUserId(userId, userIdLogin uint) ([]RoomEntity, error)
 	Create(roomEntity RoomEntity, userId uint, fileData multipart.FileHeader) (RoomEntity, error)
-	Update(roomEntity RoomEntity, id, userId uint) (RoomEntity, error)
+	Update(roomEntity RoomEntity, id, userId uint, fileData multipart.FileHeader) (RoomEntity, error)
 	Delete(id, userId uint) error
 	GetAllFilter(roomFilter RoomFilter) ([]RoomEntity, error)
 }

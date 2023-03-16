@@ -82,7 +82,15 @@ func (h *RoomHandler) Update(c echo.Context) error {
 	userId := helper.ClaimToken(c.Get("user"))
 
 	id, _ := strconv.Atoi(c.Param("id"))
-	team, err := h.Service.Update(RoomRequestToRoomEntity(&formInput), uint(id), uint(userId))
+	checkFile, _, _ := c.Request().FormFile("room_picture")
+	if checkFile != nil {
+		formHeader, err := c.FormFile("room_picture")
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{"message": "Select a file to upload"})
+		}
+		formInput.FileHeader = *formHeader
+	}
+	team, err := h.Service.Update(RoomRequestToRoomEntity(&formInput), uint(id), uint(userId), formInput.FileHeader)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, helper.ResponseFail(err.Error()))
 	}
